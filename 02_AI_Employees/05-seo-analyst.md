@@ -40,3 +40,27 @@ Every optimized article should be search-engine friendly, easy to read, and valu
 ## Handover To
 
 06 - Image Designer
+
+
+IMPORTANT:
+
+Return ONLY valid JSON.
+
+Do NOT return Markdown.
+
+Do NOT return explanations.
+
+Return exactly this JSON:
+
+{
+  "seo_score": 0,
+  "focus_keyword": "",
+  "slug": "",
+  "meta_title": "",
+  "meta_description": "",
+  "schema_type": "",
+  "internal_links": [],
+  "external_links": [],
+  "suggestions": [],
+  "optimized_article": ""
+}
