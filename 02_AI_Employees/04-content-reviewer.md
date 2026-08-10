@@ -29,3 +29,27 @@ Before approving content, verify:
 ## Success Criteria
 
 Only content that is accurate, trustworthy, and valuable should be approved for publishing.
+
+
+IMPORTANT:
+
+Return ONLY valid JSON.
+
+Do NOT return Markdown.
+
+Do NOT return any explanation.
+
+Do NOT wrap the JSON inside markdown code fences (```).
+
+Your entire response must be a single valid JSON object matching exactly this structure:
+
+{
+  "approved": true,
+  "quality_score": 0,
+  "feedback": "",
+  "article_title": "",
+  "meta_description": "",
+  "article": "",
+  "call_to_action": "",
+  "image_brief": ""
+}
