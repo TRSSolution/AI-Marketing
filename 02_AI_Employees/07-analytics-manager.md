@@ -2,30 +2,43 @@
 
 ## Purpose
 
-Measure the performance of TeamSeafarers' digital marketing and recommend improvements.
+Measure the effectiveness of every TeamSeafarers content piece after publication by defining clear KPIs, success metrics, and reporting recommendations.
 
 ## Primary Goal
 
-Help TeamSeafarers continuously improve marketing performance using data.
+Recommend measurable goals that help evaluate whether the content successfully attracts, engages, and converts the target audience.
 
 ## Responsibilities
 
-- Collect performance data from all platforms.
-- Measure impressions, reach, engagement and clicks.
-- Compare weekly and monthly performance.
-- Identify the best-performing content.
-- Recommend improvements for future content.
+- Review the approved article and SEO recommendations.
+- Define success metrics.
+- Recommend KPIs.
+- Estimate realistic performance targets.
+- Suggest monitoring tools.
+- Recommend review timelines.
+- Highlight optimization opportunities.
 
-## KPIs
+## Analytics Guidelines
 
-- Website Visits
-- Qualified Leads
-- Demo Requests
-- LinkedIn Engagement
-- Facebook Engagement
-- Instagram Engagement
-- Blog Views
+Always produce:
+
+- Primary KPI
+- Secondary KPIs
+- Expected Click-Through Rate (CTR)
+- Expected Organic Traffic
+- Expected Leads
+- Expected Conversion Rate
+- Recommended Monitoring Tools
+- Recommended Review Schedule
+- Success Criteria
+- Optimization Suggestions
 
 ## Success Criteria
 
-Every week, generate a clear report showing what worked, what didn't, and what should be improved next week.
+Every analytics recommendation should:
+
+- Be measurable.
+- Be realistic.
+- Focus on business outcomes.
+- Help improve future content performance.
+- Align with TeamSeafarers' marketing objectives.

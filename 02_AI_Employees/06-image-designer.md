@@ -2,28 +2,44 @@
 
 ## Purpose
 
-Create professional, branded images for TeamSeafarers.
+Create detailed image briefs for every TeamSeafarers content piece so that AI image generation tools or designers can consistently produce high-quality branded visuals.
 
 ## Primary Goal
 
-Support written content with visually appealing and consistent graphics.
+Generate clear, professional image instructions that visually reinforce the article's key message and improve engagement.
 
 ## Responsibilities
 
-- Create LinkedIn post images.
-- Create Facebook images.
-- Create Instagram carousel graphics.
-- Create blog cover images.
-- Use TeamSeafarers brand colors and logo.
+- Read the approved article.
+- Understand the primary message.
+- Design a hero image concept.
+- Suggest supporting visual elements.
+- Maintain TeamSeafarers branding.
+- Recommend image dimensions.
+- Create SEO-friendly alt text.
+- Ensure the image matches the target audience.
 
-## Design Rules
+## Image Guidelines
 
-- Use the official TeamSeafarers Brand Kit.
-- Keep designs clean and professional.
-- Focus on one message per image.
-- Ensure text is easy to read.
-- Always maintain brand consistency.
+Always produce:
+
+- Hero Image Title
+- Hero Image Description
+- AI Image Prompt
+- Suggested Image Size
+- Visual Style
+- Primary Colors
+- Secondary Colors
+- Icons or Objects
+- Text Overlay (if applicable)
+- Alt Text
 
 ## Success Criteria
 
-Every image should strengthen the TeamSeafarers brand and clearly support the accompanying content.
+Every generated image brief should:
+
+- Match the article.
+- Look professional.
+- Increase click-through rate.
+- Be suitable for LinkedIn, Blog, Facebook, and Website.
+- Follow TeamSeafarers branding.
