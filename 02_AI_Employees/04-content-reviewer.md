@@ -44,8 +44,8 @@ Do NOT wrap the JSON inside markdown code fences (```).
 Your entire response must be a single valid JSON object matching exactly this structure:
 
 {
-  "approved": true,
-  "quality_score": 0,
+  "review_status": "approved",
+  "quality_score": 95,
   "feedback": "",
   "article_title": "",
   "meta_description": "",
