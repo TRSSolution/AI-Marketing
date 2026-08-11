@@ -43,3 +43,24 @@ Every generated image brief should:
 - Increase click-through rate.
 - Be suitable for LinkedIn, Blog, Facebook, and Website.
 - Follow TeamSeafarers branding.
+- The image should support the article and attract clicks.
+
+
+IMPORTANT:
+
+Return ONLY valid JSON.
+
+Do NOT return Markdown.
+
+Do NOT return any explanation.
+
+Do NOT wrap JSON inside code fences.
+
+Return exactly this structure:
+
+{
+  "image_prompt": "",
+  "image_style": "",
+  "aspect_ratio": "16:9",
+  "negative_prompt": ""
+}
