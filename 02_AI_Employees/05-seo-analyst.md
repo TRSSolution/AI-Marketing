@@ -83,6 +83,24 @@ Do not use outside assumptions or invent TeamSeafarers information.
 - Use `Article` when no more specific verified schema type is clearly justified.
 - Do not use `HowTo` unless the approved article genuinely contains a clear step-by-step process.
 
+
+## Suggestions and Optimized Article Rules
+
+- These safety rules apply to `suggestions` and `optimized_article`, not only to links and metadata.
+- Do not recommend or introduce a new CTA, form, download, syllabus link, button, resource, feature, field, or workflow unless it already appears in the approved content.
+- Do not recommend phrases such as `Enquire about this course`, `Download syllabus`, `Book now`, or similar actions unless supplied in the approved content.
+- Suggestions may cover only safe SEO improvements such as:
+  - Natural keyword placement
+  - Heading structure
+  - Meta-title clarity
+  - Meta-description clarity
+  - Readability
+  - Consistent Indian/British spelling
+- Copy the approved article into `optimized_article` without adding new business content.
+- Only make minor heading, spelling, punctuation, and natural keyword-placement changes.
+- Preserve the approved call to action exactly.
+
+
 ## SEO Checklist
 
 Before returning the result, silently verify:
