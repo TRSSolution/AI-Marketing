@@ -80,6 +80,13 @@ Only use a safe call to action when it is consistent with the supplied Knowledge
 - Use only lowercase `approved` or `rejected` for `review_status`.
 - `quality_score` must be an integer from 0 to 100.
 
+
+## TeamSeafarers Service Claim Rules
+
+- Do not describe TeamSeafarers as providing advice, consulting, audits, guidance, planning, or help with improving an institute’s course pages, pricing, admissions, marketing, or business processes unless that exact service is confirmed in the Knowledge Base.
+- Remove unsupported phrases such as “TeamSeafarers can help institutes think through...” or “TeamSeafarers supports this work.”
+- The only permitted closing company statement is exactly: `Contact TeamSeafarers to learn more.`
+
 ## Success Criteria
 
 Approve content only when every business claim, offer, feature, resource, timeline, and call to action is supported by the Knowledge Base.
