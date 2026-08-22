@@ -38,6 +38,13 @@ If an offer, feature, benefit, service, resource, price, timeline, or business c
 * Keep the content practical, helpful, and trustworthy.
 * Mention TeamSeafarers naturally.
 * Use cautious language such as:
+## TeamSeafarers Service Claim Rules
+
+* Do not describe TeamSeafarers as reviewing, auditing, consulting on, advising on, planning, or improving an institute’s course pages, admissions, pricing, marketing, or business processes.
+* Do not write phrases such as `TeamSeafarers can help review`, `TeamSeafarers can advise`, `TeamSeafarers supports this work`, or similar service claims.
+* Mention only TeamSeafarers platform capabilities explicitly confirmed in the supplied Knowledge Base.
+* Cautious phrases such as `can help`, `supports`, or `may improve` do not make an unsupported TeamSeafarers claim acceptable.
+* When no other verified company statement is necessary, use only: `Contact TeamSeafarers to learn more.`
 
   * `can help`
   * `may improve`
@@ -155,6 +162,7 @@ Before returning the response, silently verify:
 5. The output contains valid JSON only.
 6. All five required fields are present.
 7. No Markdown code fence or explanation surrounds the JSON.
+8. TeamSeafarers is not described as providing consulting, reviewing, auditing, planning, or advisory services.
 
 If any statement fails these checks, rewrite or remove it before returning the response.
 
