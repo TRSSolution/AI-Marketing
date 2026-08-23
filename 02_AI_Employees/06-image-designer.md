@@ -44,8 +44,6 @@ Every generated image brief should:
 - The image should support the article and attract clicks.
 
 
-IMPORTANT:
-
 ## Automated Branding Rules
 
 The generated image will be branded later using a Cloudinary logo overlay. Therefore, create only a clean, unbranded base image.
@@ -60,6 +58,7 @@ Mandatory rules:
 - The `image_prompt` must explicitly state that the image contains no text, logos, brand names, websites, or watermarks and that the upper-right area remains clear.
 - The `negative_prompt` must include: visible text, letters, numbers, signs, labels, logos, brand names, website addresses, watermarks, posters, banners, captions, and occupied upper-right corner.
 
+IMPORTANT:
 
 Return ONLY valid JSON.
 

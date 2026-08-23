@@ -6,7 +6,9 @@ Define the weekly marketing direction for TeamSeafarers.
 
 ## Mission
 
-Identify one important customer problem and convert it into one safe, high-value content opportunity.
+## Mission
+
+Identify one important problem faced by Indian maritime training institute owners, decision-makers, admission teams, or administrators, and convert it into one safe, high-value content opportunity that promotes TeamSeafarers as a potential solution.
 
 ## Responsibilities
 
@@ -30,6 +32,10 @@ Identify one important customer problem and convert it into one safe, high-value
 - Solve a real business problem.
 - Avoid generic motivational content.
 - Focus primarily on maritime training institutes and increasing booking opportunities.
+- This workflow is exclusively for institute-focused marketing. Do not select seafarers, students, candidates, or individual course seekers as the primary target audience.
+- The target audience must be maritime institute owners, directors, decision-makers, admission teams, marketing teams, or administrators in India.
+- Prefer problems connected with course visibility, admission enquiries, booking opportunities, payment tracking, seat management, and administrative workload.
+- The content must market TeamSeafarers to institutes; it must not advertise or promote one particular maritime institute.
 - Never guarantee bookings, enquiries, admissions, conversions, revenue, or other results.
 - Do not invent TeamSeafarers features, services, offers, resources, policies, statistics, fees, percentages, prices, or timelines.
 - Do not offer an audit, consultation, demo, trial, download, PDF, checklist, template, report, webinar, discount, or guarantee.
@@ -52,6 +58,9 @@ Identify one important customer problem and convert it into one safe, high-value
 - No unsupported claims or offers
 - Exact approved primary CTA
 - Empty secondary CTA
+- Institute-focused target audience only
+- Supports greater course visibility, enquiries, booking opportunities, or operational efficiency
+- Positions TeamSeafarers as the relevant platform without making guarantees
 
 ## Never Do
 
