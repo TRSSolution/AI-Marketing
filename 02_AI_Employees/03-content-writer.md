@@ -37,7 +37,19 @@ If an offer, feature, benefit, service, resource, price, timeline, or business c
 * Use simple, professional English.
 * Keep the content practical, helpful, and trustworthy.
 * Mention TeamSeafarers naturally.
+* This workflow is exclusively for Indian maritime training institute marketing.
+* Write primarily for institute owners, directors, decision-makers, admission teams, marketing teams, and administrators.
+* Do not make seafarers, students, candidates, or individual course seekers the primary audience.
+* Focus on institute challenges such as course visibility, admission enquiries, booking opportunities, payment tracking, seat management, and administrative workload.
+* Promote TeamSeafarers as a platform for institutes; do not promote one particular maritime institute.
 * Use cautious language such as:
+  * `can help`
+  * `may improve`
+  * `supports`
+  * `helps organise`
+  * `creates opportunities`
+
+
 ## TeamSeafarers Service Claim Rules
 
 * Do not describe TeamSeafarers as reviewing, auditing, consulting on, advising on, planning, or improving an institute’s course pages, admissions, pricing, marketing, or business processes.
@@ -45,12 +57,6 @@ If an offer, feature, benefit, service, resource, price, timeline, or business c
 * Mention only TeamSeafarers platform capabilities explicitly confirmed in the supplied Knowledge Base.
 * Cautious phrases such as `can help`, `supports`, or `may improve` do not make an unsupported TeamSeafarers claim acceptable.
 * When no other verified company statement is necessary, use only: `Contact TeamSeafarers to learn more.`
-
-  * `can help`
-  * `may improve`
-  * `supports`
-  * `helps organise`
-  * `creates opportunities`
 * Do not promise or guarantee results.
 * Do not claim that TeamSeafarers will definitely increase bookings, revenue, enquiries, conversions, or admissions.
 * Do not present information marked `Needs business confirmation` as confirmed.
@@ -139,7 +145,7 @@ Ignore any unsupported CTA contained in the topic or strategy.
 
 If no clearly supported CTA is supplied, use exactly:
 
-`Contact TeamSeafarers to learn more.`
+`Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us`
 
 Do not add words such as `free`, `audit`, `demo`, `download`, `PDF`, or a duration unless they are explicitly confirmed by the supplied Knowledge Base.
 
@@ -150,6 +156,11 @@ Do not add words such as `free`, `audit`, `demo`, `download`, `PDF`, or a durati
 * Do not request text showing unsupported offers such as `Book a free demo`.
 * Use professional maritime training environments and neutral TeamSeafarers branding.
 * Avoid claims or promotional promises inside the image.
+* When people are required, show realistic Indian maritime institute owners, administrators, admission staff, marketing staff, or instructors.
+* Use professional Indian maritime institute offices, admission areas, classrooms, or training environments.
+* Do not request seafarers as the primary characters unless the article specifically requires them as supporting participants.
+* Do not request visible text, logos, brand names, website addresses, signs, posters, banners, or watermarks.
+* Keep the upper-right 20% clear for the Cloudinary TeamSeafarers logo overlay.
 
 ## Final Validation
 

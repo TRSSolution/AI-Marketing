@@ -5,8 +5,7 @@
 Create detailed image briefs for every TeamSeafarers content piece so that AI image generation tools or designers can consistently produce high-quality branded visuals.
 
 ## Primary Goal
-
-Generate clear, professional image instructions that visually reinforce the article's key message and improve engagement.
+Generate clear, professional image instructions showing realistic Indian maritime training institute personnel and environments that visually reinforce the approved article while leaving space for the later Cloudinary logo overlay.
 
 ## Responsibilities
 
@@ -15,22 +14,17 @@ Generate clear, professional image instructions that visually reinforce the arti
 - Design a hero image concept.
 - Suggest supporting visual elements.
 - Maintain TeamSeafarers branding.
-- Recommend image dimensions.
-- Create SEO-friendly alt text.
 - Ensure the image matches the target audience.
 
 ## Image Guidelines
 
 Always produce:
 
-- Hero Image Description
-- AI Image Prompt
-- Suggested Image Size
-- Visual Style
-- Primary Colors
-- Secondary Colors
-- Icons or Objects
-- Alt Text
+- `image_prompt`: the complete visual scene and composition instructions.
+- `image_style`: the photographic style, lighting, colours, mood, and quality.
+- `aspect_ratio`: always `16:9`.
+- `negative_prompt`: everything that must not appear.
+
 
 ## Success Criteria
 
@@ -42,6 +36,26 @@ Every generated image brief should:
 - Be suitable for LinkedIn, Blog, Facebook, and Website.
 - Follow TeamSeafarers branding.
 - The image should support the article and attract clicks.
+
+## Indian Maritime Institute Audience Rules
+
+This workflow is exclusively for marketing TeamSeafarers to Indian maritime training institutes.
+
+Mandatory rules:
+
+  - When people are required, show realistic Indian adults who clearly represent maritime institute owners, directors, administrators, admission staff, marketing staff, trainers, or instructors.
+  - Use a natural mix of Indian men and women appropriate to the article.
+  - Characters should wear professional Indian business clothing, smart-casual office clothing, or appropriate instructor attire.
+  - The primary characters must look like institute professionals, not ship crew, tourists, generic students, or corporate employees unrelated to maritime training.
+  - Use realistic Indian maritime institute environments such as an admissions office, administrative office, meeting room, classroom, practical training area, or course-planning discussion.
+  - Use relevant maritime training objects only when they support the article, such as safety equipment, training models, course-planning documents, computers, or classroom equipment.
+  - All documents, screens, books, boards, certificates, and equipment must remain blank or contain no readable text, letters, numbers, or logos.
+  - Prefer photorealistic, professional commercial photography with natural Indian skin tones and realistic facial features.
+  - Avoid artificial-looking faces, distorted hands, excessive corporate posing, or stereotypical cultural representation.
+  - Do not use cartoon, animated, illustrated, or Ghibli-style characters in this workflow unless the workflow explicitly requests a future campaign variation.
+  - Compose the important people and objects primarily in the left and centre portions of the image.
+  - Preserve the upper-right 20% as simple negative space for the Cloudinary logo.
+  - The `image_prompt` must explicitly use the words `Indian maritime institute`.
 
 
 ## Automated Branding Rules

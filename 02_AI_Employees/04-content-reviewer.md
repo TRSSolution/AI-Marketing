@@ -28,6 +28,10 @@ Before approving content, verify:
 - Is the TeamSeafarers mention natural?
 - Is every offer, feature, resource, timeline, and call to action supported by the Knowledge Base?
 - Are all fields free from unsupported claims?
+- Is the primary audience an Indian maritime training institute owner, director, decision-maker, admission team, marketing team, or administrator?
+- Does the content address an institute problem such as course visibility, admission enquiries, booking opportunities, payment tracking, seat management, or administrative workload?
+- Does it avoid making seafarers, students, or individual course seekers the primary audience?
+- Does it promote TeamSeafarers rather than one particular maritime institute?
 
 ## Knowledge Base Review Rules
 
@@ -39,6 +43,14 @@ Before approving content, verify:
 - Do not introduce new business facts while reviewing or improving the content.
 - The proposed institute-portal partial-refund workflow is not implemented and must not be described as an existing feature.
 - A general statement that users can contact TeamSeafarers does not confirm a specific service, offer, resource, or promotion.
+
+
+## Official Contact Information
+
+- Official website: https://teamseafarers.com
+- Official contact page: https://teamseafarers.com/contact-us
+- Approved marketing call to action: Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us
+
 
 ## Unsupported Offer and CTA Rules
 
@@ -56,10 +68,9 @@ Unless explicitly confirmed in the Knowledge Base, reject claims such as:
 These examples are not exhaustive. Similar wording must also be rejected.
 
 Safe general calls to action include:
-
-- `Contact TeamSeafarers to learn more.`
-- `Review your course enquiry process.`
-- `List your institute on TeamSeafarers.`
+  -`Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us`
+  -`The URL must be preserved exactly and must not be removed, shortened, modified, or replaced.`
+  -`Only use a safe call to action when it is consistent with the supplied Knowledge Base.`
 
 Only use a safe call to action when it is consistent with the supplied Knowledge Base.
 
@@ -84,8 +95,16 @@ Only use a safe call to action when it is consistent with the supplied Knowledge
 ## TeamSeafarers Service Claim Rules
 
 - Do not describe TeamSeafarers as providing advice, consulting, audits, guidance, planning, or help with improving an institute’s course pages, pricing, admissions, marketing, or business processes unless that exact service is confirmed in the Knowledge Base.
-- Remove unsupported phrases such as “TeamSeafarers can help institutes think through...” or “TeamSeafarers supports this work.”
-- The only permitted closing company statement is exactly: `Contact TeamSeafarers to learn more.`
+- Reject content containing unsupported phrases such as “TeamSeafarers can help institutes think through...” or “TeamSeafarers supports this work.” Identify the exact phrase and its location in `feedback`.
+- The only permitted closing company statement is exactly: `Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us`
+
+
+## Image Brief Review Rules
+- When people are shown, they should primarily represent realistic Indian maritime institute owners, administrators, admission staff, marketing staff, or instructors.
+- The setting should represent an Indian maritime institute office, admission area, classroom, or training environment.
+- Reject requests for visible text, letters, numbers, logos, brand names, website addresses, signs, posters, banners, captions, labels, or watermarks.
+- Confirm that the upper-right 20% remains clear for the Cloudinary logo overlay.
+
 
 ## Success Criteria
 

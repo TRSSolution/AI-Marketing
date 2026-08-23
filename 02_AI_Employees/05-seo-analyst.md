@@ -51,6 +51,10 @@ Treat the approved article as the factual boundary.
 - `meta_description` must not contain unsupported claims.
 - Use `Article` as the schema type unless another general schema type is clearly justified.
 - Do not return any field other than the six fields specified below.
+- For this workflow, SEO metadata must remain focused on Indian maritime training institutes and their owners, directors, admission teams, marketing teams, or administrators.
+- Prefer an institute-relevant focus keyword connected with the approved article’s actual subject, such as maritime institute admissions, maritime course visibility, maritime training bookings, or institute administration.
+- Do not change an institute-focused article into seafarer-focused or general maritime content.
+- Include `India` in the keyword or metadata only when it is natural and supported by the approved article; do not force location keywords.
 
 ## Final Validation
 

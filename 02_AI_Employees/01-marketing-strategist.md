@@ -45,7 +45,7 @@ Identify one important problem faced by Indian maritime training institute owner
 - Use cautious wording such as `can help`, `may support`, and `booking opportunities`.
 - Use exactly this primary CTA:
 
-  `Contact TeamSeafarers to learn more.`
+  `Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us`
 
 - Leave `secondary_cta` empty.
 - Do not create any other CTA.
