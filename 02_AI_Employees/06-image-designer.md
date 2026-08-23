@@ -32,7 +32,7 @@ Every generated image brief should:
 
 - Match the article.
 - Look professional.
-- Increase click-through rate.
+- Be designed to support engagement and click-through opportunities without guaranteeing results.
 - Be suitable for LinkedIn, Blog, Facebook, and Website.
 - Follow TeamSeafarers branding.
 - The image should support the article and attract clicks.
@@ -53,8 +53,12 @@ Mandatory rules:
   - Prefer photorealistic, professional commercial photography with natural Indian skin tones and realistic facial features.
   - Avoid artificial-looking faces, distorted hands, excessive corporate posing, or stereotypical cultural representation.
   - Do not use cartoon, animated, illustrated, or Ghibli-style characters in this workflow unless the workflow explicitly requests a future campaign variation.
-  - Compose the important people and objects primarily in the left and centre portions of the image.
-  - Preserve the upper-right 20% as simple negative space for the Cloudinary logo.
+  - Compose all people, faces, bodies, hands, equipment, furniture, and important objects entirely within the left 60% of the image.
+  - Keep the entire rightmost 35% of the image, from top to bottom, as a plain, uncluttered wall or simple background.
+  - Do not place people, faces, bodies, hands, doorways, furniture, equipment, text, or important visual details anywhere in the rightmost 35%.
+  - If the requested number of people conflicts with the reserved branding space, reduce the number of people. Preserving the empty branding area has higher priority than showing every requested person.
+  - Do not distribute people across the full image width.
+  - The `image_prompt` must begin with the mandatory left-aligned composition and empty-right-side requirement before describing the scene.
   - The `image_prompt` must explicitly use the words `Indian maritime institute`.
 
 
@@ -66,11 +70,11 @@ Mandatory rules:
 
 - Do not request or include any TeamSeafarers logo, wordmark, brand name, website address, watermark, poster, banner, course title, headline, caption, label, letters, numbers, or other visible text inside the image.
 - Do not describe tablets, screens, boards, brochures, certificates, books, signs, clothing, or walls as containing readable text or logos.
-- Keep the upper-right 20% of the image as plain, uncluttered background.
+- Keep the rightmost 35% from top to bottom of the image as plain, uncluttered background.
 - Do not place people, faces, objects, equipment, text, or important visual details in the upper-right 20%.
 - TeamSeafarers branding in this brief means using a professional, trustworthy maritime-training mood and suitable brand-aligned colours only. It does not mean placing a logo or brand text inside the generated image.
 - The `image_prompt` must explicitly state that the image contains no text, logos, brand names, websites, or watermarks and that the upper-right area remains clear.
-- The `negative_prompt` must include: visible text, letters, numbers, signs, labels, logos, brand names, website addresses, watermarks, posters, banners, captions, and occupied upper-right corner.
+- The `negative_prompt` must include: visible text, letters, numbers, signs, labels, logos, brand names, website addresses, watermarks, posters, banners, captions, occupied upper-right corner, ship crew as primary characters, generic Western corporate setting, cartoon, animation, illustration, distorted faces, and distorted hands.
 
 IMPORTANT:
 
