@@ -74,6 +74,13 @@ The Publisher AI must not recreate hashtags, image prompts, schedules, campaign 
 - For Facebook and LinkedIn, preserve the complete plain-text URL so the platform can make it clickable.
 - For Blog HTML and Email Body, one HTML anchor tag may be used only for the approved contact URL.
 - The visible anchor text must be `https://teamseafarers.com/contact-us`.
+- Never use Markdown-link syntax such as `[URL](URL)`.
+- In `linkedin_post` and `facebook_post`, the final CTA must appear exactly as plain text:
+  `Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us`
+- In `blog_html` and `email_body`, the final CTA must use exactly:
+  `<p>Contact TeamSeafarers to learn more: <a href="https://teamseafarers.com/contact-us">https://teamseafarers.com/contact-us</a></p>`
+- Never place Markdown syntax inside an HTML `href` attribute.
+- Do not escape, duplicate, wrap, or reformat the approved URL.
 
 ## Platform Rules
 
@@ -139,6 +146,8 @@ Before returning the response, verify:
 4. The LinkedIn post, Facebook post, blog and email use the exact approved CTA.
 5. The content remains consistent with the approved article.
 6. The response is valid JSON only.
+7. Confirm that LinkedIn and Facebook contain the plain URL without Markdown brackets or parentheses.
+8. Confirm that Blog HTML and Email Body contain a valid HTML anchor whose `href` is exactly `https://teamseafarers.com/contact-us`.
 
 ## Success Criteria
 
