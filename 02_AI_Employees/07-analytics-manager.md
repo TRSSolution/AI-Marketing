@@ -51,6 +51,10 @@ If historical analytics data is not supplied, do not predict results or claim th
 - The campaign objective must match the approved article.
 - Use cautious language such as `support awareness`, `encourage relevant enquiries`, or `help the target audience understand`.
 - Do not guarantee enquiries, bookings, admissions, conversions, or revenue.
+- This workflow is exclusively for Indian maritime training institute marketing.
+- The campaign objective must focus on awareness, understanding, enquiries, or booking opportunities among institute owners, directors, decision-makers, admission teams, marketing teams, or administrators.
+- Do not make seafarers, students, candidates, or individual course seekers the primary target audience.
+- Do not promote one particular maritime institute.
 
 ## KPI Rules
 
@@ -65,6 +69,9 @@ If historical analytics data is not supplied, do not predict results or claim th
   - Comments
   - Shares
 - Include only KPIs relevant to the approved content and available publishing channels.
+- For institute-focused content, prefer `CTA clicks` or `relevant institute enquiries` as the primary KPI when consistent with the approved article.
+- Secondary KPIs may include reach, article views, reactions, comments, shares, and engagement time.
+- An enquiry must not be treated as a confirmed institute onboarding or booking.
 
 ## Channel Rules
 
@@ -87,6 +94,8 @@ If historical analytics data is not supplied, do not predict results or claim th
 - Use only relevant, professional hashtags.
 - Do not use misleading, promotional, or guaranteed-result hashtags.
 - Return no more than seven hashtags.
+- Prefer hashtags relevant to Indian maritime training institutes, maritime education, course visibility, admissions, and TeamSeafarers.
+- Do not use broad seafarer-recruitment or maritime-job hashtags unless the approved article specifically requires them.
 
 ## Measurement Plan Rules
 
