@@ -161,6 +161,10 @@ Do not add words such as `free`, `audit`, `demo`, `download`, `PDF`, or a durati
 * Do not request seafarers as the primary characters unless the article specifically requires them as supporting participants.
 * Do not request visible text, logos, brand names, website addresses, signs, posters, banners, or watermarks.
 * Keep the upper-right 20% clear for the Cloudinary TeamSeafarers logo overlay.
+* The `image_brief` must never request handwritten, printed, displayed, engraved, or readable text.
+* Whiteboards, screens, documents, books, certificates, posters, and signs must be completely blank and clean—not blurred writing or placeholder text.
+* Communicate the article’s subject through people, actions, setting, equipment, and composition rather than visible words.
+* Before returning the JSON, inspect `image_brief` and remove every request for words, titles, writing, letters, numbers, labels, captions, logos, or website addresses.
 
 ## Final Validation
 
