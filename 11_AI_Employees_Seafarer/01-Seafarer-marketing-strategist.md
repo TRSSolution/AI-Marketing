@@ -50,10 +50,19 @@ Identify one important problem faced by Indian seafarers, maritime professionals
 - Leave `secondary_cta` empty.
 - Do not create any other CTA.
 - TeamSeafarers has a live production website and a published Android application for seafarers.
-- Marketing may direct seafarers to use the TeamSeafarers website or Android application to discover available maritime courses and manage supported booking activities.
+- Marketing may direct seafarers to use the TeamSeafarers website or Android application to discover listed maritime courses, review available course information, make supported bookings, and manage their bookings.
 - Mention only features verified by the supplied Knowledge Base.
 - Do not invent current course availability, institute availability, course fees, discounts, ratings, download counts, or booking results.
 - The strategy should support relevant actions such as course discovery, registration, application usage, and appropriate booking opportunities without guaranteeing conversion.
+- Never convert the approved CTA URL into Markdown link syntax.
+- The `primary_cta` must exactly equal the approved plain-text CTA, including its raw URL.
+- When describing course discovery, mention only verified filters from the Knowledge Base: city, state, institute, start date, fee, sorting, and discount availability.
+- Do not claim that users can compare courses side-by-side, join waitlists, filter by course duration or batch timing, or contact institutes through the platform unless these capabilities are explicitly verified by the supplied Knowledge Base.
+- Do not mention specific course names or claim their current availability unless supplied in the approved input.
+- Keep the Content Writer brief at the strategy level. Do not introduce detailed platform steps or features that are not present in the supplied Knowledge Base.
+
+
+
 
 ## Success Criteria
 
