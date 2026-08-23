@@ -88,6 +88,18 @@ Identify one important problem faced by Indian seafarers, maritime professionals
 
 02 - Topic Generator
 
+
+## CTA Output Enforcement
+
+The `primary_cta` JSON value must be exactly:
+
+Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us
+
+Output the URL as plain text.
+
+The `primary_cta` must not contain `[`, `]`, `(`, `)`, Markdown link syntax, HTML, or any additional wording.
+
+
 IMPORTANT:
 
 Return ONLY valid JSON.
