@@ -67,7 +67,7 @@ If historical analytics data is not supplied, do not predict performance or clai
   * `support awareness`
   * `help Indian seafarers understand`
   * `encourage relevant course enquiries`
-  * `encourage visits to the approved contact page`
+  * encourage visits to the TeamSeafarers website or Android app listing
   * `support informed course-discovery decisions`
 * Do not guarantee clicks, enquiries, registrations, bookings, course completion, certification, placement, employment, or revenue.
 
@@ -80,7 +80,8 @@ If historical analytics data is not supplied, do not predict performance or clai
 Suitable KPIs may include:
 
 * CTA clicks
-* Contact-page visits
+* Website course-discovery link clicks
+* Android app link clicks
 * Relevant Seafarer enquiries
 * Article views
 * Social post reach
@@ -92,15 +93,35 @@ Suitable KPIs may include:
 
 Primary KPI rules:
 
-* Prefer `CTA clicks`, `contact-page visits`, or `relevant Seafarer enquiries` when consistent with the approved article.
-* Use only one primary KPI.
-* Do not treat a click or enquiry as a confirmed registration, booking, course completion, placement, or revenue event.
+* Use exactly `Website CTA clicks` as the primary KPI.
+* Treat this KPI as clicks on the approved TeamSeafarers website link.
+* Include `Android app link clicks` as a secondary KPI when the approved article contains the Android app CTA.
+* Do not use contact-page visits as the primary KPI unless the approved content specifically contains the verified contact-page URL.
+* Do not treat a website click, app-link click, enquiry, or booking-interest action as a confirmed registration, app installation, booking, course completion, placement, or revenue event.
 
 Secondary KPI rules:
 
 * Include only supporting measurements.
 * Do not repeat the primary KPI.
 * Do not invent numeric targets.
+
+## Approved CTA Destination Rules
+
+The approved Seafarer campaign CTA contains these two destinations:
+
+* Website: https://teamseafarers.com/
+* Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share
+
+Rules:
+
+* Measure website-link clicks and Android-app-link clicks separately.
+* Do not replace either destination with the contact page.
+* Do not introduce another URL or CTA destination.
+* Do not report an Android app-link click as an app installation.
+* Do not report a website click as a registration, enquiry, or booking.
+* Do not claim that tracking is active unless verified tracking data is supplied.
+
+
 
 ## Channel Rules
 
@@ -156,9 +177,11 @@ Secondary KPI rules:
 * Suitable actions may include:
 
   * Record publication date and channel.
-  * Apply channel-specific UTM source and medium values.
-  * Monitor CTA or contact-page clicks.
-  * Monitor relevant Seafarer enquiries.
+  * Apply channel-specific UTM source and medium values to the website destination when tracking is implemented.
+  * Record Android app-link clicks separately without claiming that they represent completed installations.
+  * Monitor clicks on the approved TeamSeafarers website CTA.
+  * Monitor clicks on the approved Android app link separately.
+  * Monitor relevant Seafarer enquiries only when verified enquiry data is available.
   * Record reactions, comments, and shares.
   * Compare channel results after sufficient real data is collected.
   * Review whether comments or enquiries are relevant to the approved topic.
@@ -183,6 +206,30 @@ Before returning the response, verify:
 9. The measurement plan contains tracking actions only.
 10. Only the required output fields are present.
 11. The response is valid JSON.
+
+## Seafarer Campaign Measurement Rules
+
+This workflow measures marketing directed toward Indian seafarers, maritime professionals, maritime students and maritime course seekers.
+
+Primary KPI:
+
+- Website CTA clicks.
+
+Secondary KPIs:
+
+- Android app link clicks.
+- Relevant course enquiries.
+- Social reactions, comments and shares.
+- Article views and engagement time.
+- Verified booking-interest actions, only when their tracking source and meaning are clearly defined.
+
+Use the campaign objective:
+
+Support informed maritime course-discovery and booking decisions.
+
+Do not claim that clicks, app installs, bookings, admissions or course outcomes are guaranteed.
+
+Recommend no more than seven relevant hashtags.
 
 ## Success Criteria
 

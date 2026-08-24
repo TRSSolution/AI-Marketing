@@ -33,7 +33,7 @@ Identify one important problem faced by Indian seafarers, maritime professionals
 - This workflow is exclusively for seafarer-focused marketing.
 - The primary audience must be Indian seafarers, maritime professionals, maritime students, or individuals looking for maritime training courses.
 - Do not select maritime institute owners, directors, admission teams, marketing teams, or administrators as the primary audience.
-- Prefer problems connected with discovering relevant maritime courses, comparing available course information, understanding course requirements, finding suitable schedules or locations, booking courses, tracking bookings, payments, cancellations, invoices, notifications, or support.
+- Prefer problems connected with discovering listed maritime courses, reviewing available course information, finding suitable locations or start dates, making supported bookings, or managing bookings. Mention payments, cancellations, invoices, notifications, support, or other capabilities only when explicitly verified by the supplied Knowledge Base.
 - The content must market TeamSeafarers to seafarers without promoting one particular maritime institute.
 - Do not provide maritime safety, medical, legal, career-placement, certification, or regulatory advice unless it is explicitly supported by the supplied Knowledge Base.
 - Never guarantee course availability, admission, certification, employment, placement, salary, promotion, refunds, or other results.
@@ -45,7 +45,8 @@ Identify one important problem faced by Indian seafarers, maritime professionals
 - Use cautious wording such as `can help`, `may support`, and `can make course discovery easier`.
 - Use exactly this primary CTA:
 
-  `Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us`
+  Explore maritime courses on TeamSeafarers: https://teamseafarers.com/
+  Get the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share
 
 - Leave `secondary_cta` empty.
 - Do not create any other CTA.
@@ -53,7 +54,7 @@ Identify one important problem faced by Indian seafarers, maritime professionals
 - Marketing may direct seafarers to use the TeamSeafarers website or Android application to discover listed maritime courses, review available course information, make supported bookings, and manage their bookings.
 - Mention only features verified by the supplied Knowledge Base.
 - Do not invent current course availability, institute availability, course fees, discounts, ratings, download counts, or booking results.
-- The strategy should support relevant actions such as course discovery, registration, application usage, and appropriate booking opportunities without guaranteeing conversion.
+- The strategy should support relevant actions such as course discovery, website or Android app usage, informed course selection, and supported booking opportunities without guaranteeing conversion.
 - Never convert the approved CTA URL into Markdown link syntax.
 - The `primary_cta` must exactly equal the approved plain-text CTA, including its raw URL.
 - When describing course discovery, mention only verified filters from the Knowledge Base: city, state, institute, start date, fee, sorting, and discount availability.
@@ -89,15 +90,28 @@ Identify one important problem faced by Indian seafarers, maritime professionals
 02 - Topic Generator
 
 
-## CTA Output Enforcement
+## Verified TeamSeafarers Links
 
-The `primary_cta` JSON value must be exactly:
+Use only these verified URLs:
 
-Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us
+- Website and course discovery: https://teamseafarers.com/
+- Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share
+- Contact and support: https://teamseafarers.com/contact-us
 
-Output the URL as plain text.
+## CTA Rules
 
-The `primary_cta` must not contain `[`, `]`, `(`, `)`, Markdown link syntax, HTML, or any additional wording.
+- Use exactly this two-line primary CTA:
+
+Explore maritime courses on TeamSeafarers: https://teamseafarers.com/
+Get the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share
+
+- Copy this CTA exactly into `primary_cta`.
+- Keep `secondary_cta` as an empty string.
+- Include this exact CTA once at the end of `content_writer_brief`.
+- Do not place the contact-us URL in `primary_cta`, `secondary_cta`, or `content_writer_brief`. It may remain documented under `Verified TeamSeafarers Links` for reference but is not part of this workflow’s approved CTA.
+- Do not use Markdown link syntax, HTML, brackets, or alternative wording.
+- Do not add another CTA, offer, demo, trial, download, discount, or guarantee.
+
 
 
 IMPORTANT:
@@ -118,7 +132,7 @@ Return exactly:
   "content_title": "",
   "content_goal": "",
   "target_audience": "",
-  "primary_cta": "Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us",
-  "secondary_cta": "",
+  "primary_cta": "Explore maritime courses on TeamSeafarers: https://teamseafarers.com/\nGet the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share",
+"secondary_cta": "",
   "content_writer_brief": ""
 }

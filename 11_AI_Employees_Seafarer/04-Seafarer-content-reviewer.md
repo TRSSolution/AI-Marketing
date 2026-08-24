@@ -83,15 +83,22 @@ Reject unsupported claims that TeamSeafarers provides:
 
 ## Official Contact Information
 
-- Official website: https://teamseafarers.com
+- Official website: https://teamseafarers.com/
 - Official contact page: https://teamseafarers.com/contact-us
-- Exact approved CTA:
+- Official Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share
 
-`Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us`
+Exact approved campaign CTA:
+
+Explore maritime courses on TeamSeafarers: https://teamseafarers.com/
+Get the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share
 
 ## CTA Review Rules
 
-The `call_to_action` field must equal the exact approved CTA.
+The `article` field must end with the same exact two-line CTA.
+
+The CTA must appear exactly once in the article and exactly once in the `call_to_action` field.
+
+The two raw URLs must not be converted into Markdown links or HTML anchors.
 
 Reject the content if the CTA:
 
@@ -161,8 +168,10 @@ Approve the image brief only when:
 
 - Primary characters are realistic Indian seafarers, maritime professionals, or maritime students appropriate to the article.
 - The setting is relevant to the Seafarer topic.
-- Important people and objects are placed primarily in the left and centre portions.
-- The upper-right 20% is clear and uncluttered for the Cloudinary logo overlay.
+- All important people, faces, hands, furniture and objects are contained within the left 60% of the image.
+- The entire rightmost 35% from top to bottom is plain and uncluttered.
+- The upper-right 20% is completely empty for the later Cloudinary logo overlay.
+- No person, face, body, hand, doorway, furniture, equipment or important object occupies the rightmost 35%.
 - No generated TeamSeafarers logo is requested.
 - No visible text, letters, numbers, logos, brand names, website addresses, signs, posters, banners, captions, labels or watermarks are requested.
 - Screens, phones, laptops, documents, books, certificates, boards and signs are blank and contain no readable content.
@@ -176,6 +185,7 @@ Reject image briefs requesting:
 - Distorted, unrealistic or stereotypical representation.
 - Cartoon, animated, illustrated or Ghibli-style characters.
 - An occupied or cluttered upper-right area.
+- People or important objects placed in the rightmost 35% of the image.
 
 ## Approval and Rejection Rules
 
@@ -219,10 +229,38 @@ Before returning the response, silently verify:
 3. Every TeamSeafarers claim is supported.
 4. No course, institute, feature, availability, offer, number, timeline or guarantee is invented.
 5. No prohibited advice is given.
-6. The CTA exactly matches the approved plain-text CTA.
-7. The image brief complies with all branding-space and no-text rules.
+6. The `call_to_action` exactly matches the approved plain-text two-line CTA, and the article ends with that same CTA exactly once.
+7. The image brief keeps all important content within the left 60%, keeps the entire rightmost 35% empty, and contains no visible text or generated branding.
 8. The response is one valid JSON object.
 9. No Markdown fence, heading or explanation surrounds the JSON.
+
+
+## Verified Link Review Rules
+
+These are the only approved TeamSeafarers URLs:
+
+- https://teamseafarers.com/
+- https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share
+- https://teamseafarers.com/contact-us
+
+The approved campaign CTA is exactly:
+
+Explore maritime courses on TeamSeafarers: https://teamseafarers.com/
+Get the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share
+
+Approve these URLs only when presented as plain URLs.
+
+Reject:
+
+- Any other URL.
+- Markdown-formatted links.
+- HTML links or anchors.
+- Shortened or redirected URLs.
+- Invented application features.
+- Claims of guaranteed availability, admission, certification, placement, discounts or results.
+- Replacement of the approved website-and-app campaign CTA with the contact-page URL.
+
+The contact page may appear only when genuine support or enquiry guidance is necessary. It must not replace or modify the approved campaign CTA.
 
 ## Success Criteria
 

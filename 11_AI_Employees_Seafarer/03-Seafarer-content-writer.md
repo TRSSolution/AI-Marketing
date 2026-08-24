@@ -55,6 +55,13 @@ If a feature, benefit, service, course, institute, offer, price, timeline, avail
 - Do not provide medical, legal, regulatory, immigration, certification, employment, or career-placement advice.
 - Do not invent course requirements, eligibility rules, required documents, regulatory obligations, certification validity, medical requirements, or employment requirements.
 - If verification is necessary, tell the reader to check the official information supplied by the relevant institute or appropriate authority without inventing contact methods or procedures.
+- TeamSeafarers has a live production website and Android app for seafarers.
+- The article may direct readers to use the website or Android app to discover listed maritime courses, review available course information, make supported bookings, and manage bookings.
+- Mention only capabilities verified by the supplied Knowledge Base and use cautious wording such as `can help` or `may support`.
+- When discussing course discovery, mention only these verified filters: city, state, institute, start date, fee, sorting, and discount availability.
+- Do not claim side-by-side course comparison, waitlists, duration filters, batch-timing filters, or direct institute contact through the platform unless verified by the supplied Knowledge Base.
+- Never guarantee course availability, admission, certification, refunds, placement, employment, or other outcomes.
+
 
 ## Verified TeamSeafarers Platform Rules
 
@@ -102,6 +109,8 @@ Do not describe any capability as available unless it is supported by the suppli
 - Cautious wording does not make an unsupported TeamSeafarers claim acceptable.
 - Do not present information marked `Needs business confirmation` as confirmed.
 - Do not describe proposed or unimplemented features as existing features.
+- When discussing TeamSeafarers, state only that its live website and Android app can help users discover listed maritime courses and make or manage supported bookings. Do not invent filters, features, institutes, courses, availability, prices, discounts, admission outcomes, certificates, refunds, placements, or employment results.
+
 
 ## No Invented Offers or Resources
 
@@ -148,17 +157,20 @@ Hypothetical examples must not contain invented TeamSeafarers courses, institute
 
 ## Call-to-Action Rules
 
-Use exactly this plain-text CTA:
+Use exactly this two-line plain-text CTA:
 
-`Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us`
+Explore maritime courses on TeamSeafarers: https://teamseafarers.com/
+Get the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share
 
-The `call_to_action` field must equal that exact sentence.
+The `call_to_action` field must exactly equal these two lines, including the line break.
 
-Do not convert the URL into Markdown link syntax.
+Include the same exact CTA once at the end of `article`.
 
-The `call_to_action` must not contain `[`, `]`, `(`, `)`, HTML, additional wording, or another CTA.
+Do not use Markdown link syntax, HTML, brackets, alternative wording, shortened URLs, or additional links.
 
-Do not add words such as `free`, `demo`, `download`, `install`, `register now`, `book now`, or `apply now`.
+Do not use the contact-us URL.
+
+Do not add another CTA or words such as `free`, `demo`, `download`, `install`, `register now`, `book now`, or `apply now`.
 
 ## Image Brief Rules
 
@@ -177,6 +189,12 @@ Do not add words such as `free`, `demo`, `download`, `install`, `register now`, 
 - Do not request cartoon, animation, illustration or Ghibli-style imagery in this workflow.
 - Communicate the subject through people, actions, setting, equipment and composition rather than visible words.
 - Before returning the JSON, inspect `image_brief` and remove every request for visible writing, titles, letters, numbers, labels, captions, logos or website addresses.
+- The `image_brief` must show realistic Indian seafarers, maritime professionals, maritime students, or maritime course seekers.
+- Do not use maritime institute owners, administrators, admissions staff, or marketing staff as the primary characters.
+- Request a clean, unbranded base image because the TeamSeafarers logo will be added later through Cloudinary.
+- Do not request visible text, logos, brand names, websites, watermarks, readable screens, readable documents, course prices, discounts, or availability information.
+- Keep all important people and objects within the left 60% of the image.
+- Keep the rightmost 35% and upper-right 20% plain and uncluttered for the later logo overlay.
 
 ## Final Validation
 
@@ -187,11 +205,14 @@ Before returning the response, silently verify:
 3. No course, institute, feature, availability, offer, number, timeline or guarantee has been invented.
 4. No medical, legal, regulatory, certification, employment or placement advice has been given.
 5. No information marked `Needs business confirmation` is presented as confirmed.
-6. The exact approved plain-text CTA is used.
+6. The exact approved two-line plain-text CTA appears once at the end of `article` and exactly matches `call_to_action`.
 7. The output contains valid JSON only.
 8. All five required fields are present.
 9. No Markdown code fence or explanation surrounds the JSON.
 10. The image brief contains no visible text or generated branding request.
+
+
+
 
 If any statement fails these checks, rewrite or remove it before returning the response.
 
@@ -207,6 +228,8 @@ Every piece of content should:
 - Contain no unsupported claims or invented offers.
 - Encourage informed use of verified TeamSeafarers functionality without guarantees.
 
+
+
 ## Output Requirements
 
 Return only valid JSON.
@@ -217,12 +240,13 @@ Do not return an explanation.
 
 Do not wrap the JSON inside code fences.
 
+
 Your entire response must be one valid JSON object matching exactly this structure:
 
 {
   "article_title": "",
   "meta_description": "",
   "article": "",
-  "call_to_action": "Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us",
+  "call_to_action": "Explore maritime courses on TeamSeafarers: https://teamseafarers.com/\nGet the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share",
   "image_brief": ""
 }
