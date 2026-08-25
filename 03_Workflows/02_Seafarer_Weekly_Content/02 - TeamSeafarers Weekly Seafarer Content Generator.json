@@ -1,0 +1,1302 @@
+{
+  "name": "02 - TeamSeafarers Weekly Seafarer Content Generator",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -864,
+        0
+      ],
+      "id": "c8388bdd-aded-4d74-abf5-bfd59a883354",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const jsonText = item.json.output[0].content[0].text;\n  const content = JSON.parse(jsonText);\n\n  return {\n    json: content\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -560,
+        256
+      ],
+      "id": "6a3de5f3-59b6-4f3a-82be-7722a7a3beb2",
+      "name": "Content Parser"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $('Load Content Reviewer Prompt from GitHub').item.json.data }}\n\n---\n\nCompany Context\n\n{{ $('Company Context').item.json.company_context }}\n\n---\n\nContent\n\n{{ JSON.stringify($('Content Parser').item.json, null, 2) }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        272,
+        272
+      ],
+      "id": "51856348-fd86-4cee-9d4f-f80399696fa0",
+      "name": "Content Reviewer AI",
+      "credentials": {
+        "openAiApi": {
+          "id": "sg99ygMGJzE1caH0",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const jsonText =\n  $input.first().json.output[0].content[0].text;\n\nconst topics = JSON.parse(jsonText);\n\n// TEST MODE: Process only 1 topic.\n// For final production testing, remove .slice(0, 1).\nreturn topics.slice(0, 1).map(topic => ({\n  json: topic\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        0
+      ],
+      "id": "8db3c387-291b-431c-8db8-b3e499adc7bb",
+      "name": "Topic Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const jsonText = item.json.output[0].content[0].text;\n  const review = JSON.parse(jsonText);\n\n  return {\n    json: review\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        272
+      ],
+      "id": "3f4e7e07-aa0f-4998-a887-a2d83afc2883",
+      "name": "Reviewer Parser"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $('Load SEO Analyst Prompt from GitHub').item.json.data }}\n\n---\n\nCompany Context:\n\n{{ $('Company Context').item.json.company_context }}\n\nReviwed Content\n\n{{ JSON.stringify($('Reviewer Parser').item.json, null, 2) }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        1040,
+        272
+      ],
+      "id": "673d40bd-dbaf-4f41-b14a-fd2bb51315a5",
+      "name": "SEO Analyst AI",
+      "credentials": {
+        "openAiApi": {
+          "id": "sg99ygMGJzE1caH0",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const seoItems = $input.all();\nconst approvedItems = $('Reviewer Parser').all();\n\nif (seoItems.length !== approvedItems.length) {\n  throw new Error(\n    'SEO item count (' + seoItems.length +\n    ') does not match approved reviewer item count (' +\n    approvedItems.length + ')'\n  );\n}\n\nconst requiredSeoFields = [\n  'seo_score',\n  'focus_keyword',\n  'slug',\n  'meta_title',\n  'meta_description',\n  'schema_type'\n];\n\nreturn seoItems.map((item, index) => {\n  let jsonText = item.json.output[0].content[0].text.trim();\n\n  jsonText = jsonText\n    .replace(/^```json\\s*/i, '')\n    .replace(/^```\\s*/i, '')\n    .replace(/\\s*```$/, '');\n\n  const seo = JSON.parse(jsonText);\n\n  requiredSeoFields.forEach(field => {\n    if (!(field in seo)) {\n      throw new Error('Missing SEO field: ' + field);\n    }\n  });\n\n  const extraFields = Object.keys(seo).filter(\n    field => !requiredSeoFields.includes(field)\n  );\n\n  if (extraFields.length > 0) {\n    throw new Error(\n      'Unexpected SEO fields: ' + extraFields.join(', ')\n    );\n  }\n\n  if (\n    !Number.isInteger(seo.seo_score) ||\n    seo.seo_score < 0 ||\n    seo.seo_score > 100\n  ) {\n    throw new Error('seo_score must be an integer from 0 to 100');\n  }\n\n  const approved = approvedItems[index].json;\n\n  if (approved.review_status !== 'approved') {\n    throw new Error(\n      'SEO processing blocked because reviewer status is not approved'\n    );\n  }\n\n  return {\n    json: {\n      ...seo,\n      internal_links: [],\n      external_links: [],\n      suggestions: [],\n      article_title: approved.article_title,\n      optimized_article: approved.article,\n      call_to_action: approved.call_to_action,\n      image_brief: approved.image_brief,\n      review_status: approved.review_status,\n      quality_score: approved.quality_score\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -816,
+        576
+      ],
+      "id": "0de9e0d8-6656-4cef-a0b8-0332fb79b478",
+      "name": "SEO Parser"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $('Load Image Designer Prompt from GitHub').item.json.data }}\n\n---\n\nCompany Context:\n\n{{ $('Company Context').item.json.company_context }}\n\nSEO Content\n\n{{ JSON.stringify($('SEO Parser').item.json, null, 2) }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        -128,
+        576
+      ],
+      "id": "514571b3-7a37-4dc0-ae87-9535b8071272",
+      "name": "Image Designer AI",
+      "credentials": {
+        "openAiApi": {
+          "id": "sg99ygMGJzE1caH0",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const jsonText = item.json.output[0].content[0].text;\n  const image = JSON.parse(jsonText);\n\n  return {\n    json: image\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        576
+      ],
+      "id": "550d5469-54c7-4711-9939-9e2837aef3de",
+      "name": "Image Parser"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $('Load Analyst Manager Prompt from GitHub').item.json.data }}\n\n---\n\nCompany Context:\n\n{{ $('Company Context').item.json.company_context }}\n\nImage Assets / Final Content\n\n{{ JSON.stringify($('Image Parser').item.json, null, 2) }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        1024,
+        576
+      ],
+      "id": "05e3fb42-1fb1-4fb1-974e-cadbdc90e46a",
+      "name": "Analytics Manager AI",
+      "credentials": {
+        "openAiApi": {
+          "id": "sg99ygMGJzE1caH0",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const analyticsItems = $input.all();\nconst seoItems = $('SEO Parser').all();\nconst imageItems = $('Image Parser').all();\n\nif (\n  analyticsItems.length !== seoItems.length ||\n  analyticsItems.length !== imageItems.length\n) {\n  throw new Error(\n    'Analytics, SEO and Image item counts do not match'\n  );\n}\n\nconst requiredFields = [\n  'campaign_objective',\n  'primary_kpi',\n  'secondary_kpis',\n  'target_audience',\n  'recommended_channels',\n  'utm_campaign',\n  'utm_source',\n  'utm_medium',\n  'hashtags',\n  'measurement_plan'\n];\n\nreturn analyticsItems.map((item, index) => {\n  let jsonText = item.json.output[0].content[0].text.trim();\n\n  jsonText = jsonText\n    .replace(/^```json\\s*/i, '')\n    .replace(/^```\\s*/i, '')\n    .replace(/\\s*```$/, '');\n\n  const analytics = JSON.parse(jsonText);\n\n  requiredFields.forEach(field => {\n    if (!(field in analytics)) {\n      throw new Error('Missing Analytics field: ' + field);\n    }\n  });\n\n  const extraFields = Object.keys(analytics).filter(\n    field => !requiredFields.includes(field)\n  );\n\n  if (extraFields.length > 0) {\n    throw new Error(\n      'Unexpected Analytics fields: ' + extraFields.join(', ')\n    );\n  }\n\n  const arrayFields = [\n    'secondary_kpis',\n    'recommended_channels',\n    'hashtags',\n    'measurement_plan'\n  ];\n\n  arrayFields.forEach(field => {\n    if (!Array.isArray(analytics[field])) {\n      throw new Error(field + ' must be an array');\n    }\n  });\n\n  if (analytics.hashtags.length > 7) {\n    throw new Error('Analytics output contains more than 7 hashtags');\n  }\n\n  return {\n    json: {\n      ...seoItems[index].json,\n      ...imageItems[index].json,\n      ...analytics\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        576
+      ],
+      "id": "c04e5199-cbb5-4808-814c-e87f35bddfcc",
+      "name": "Analytics Parser"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $('Load Publisher Prompt from GitHub').item.json.data }}\n\n---\n\nCompany Context:\n\n{{ $('Company Context').item.json.company_context }}\n\nAnalytics & Final Package\n\n{{ JSON.stringify($('Analytics Parser').item.json, null, 2) }}\n\n\n---\n\nImage Designer Output\n\n{{ JSON.stringify($('Image Parser').item.json, null, 2) }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        816
+      ],
+      "id": "64bb1053-b38d-462c-b713-fdf7142bc392",
+      "name": "Publisher AI",
+      "credentials": {
+        "openAiApi": {
+          "id": "sg99ygMGJzE1caH0",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const publisherItems = $input.all();\nconst analyticsItems = $('Analytics Parser').all();\n\nif (publisherItems.length !== analyticsItems.length) {\n  throw new Error(\n    'Publisher item count does not match Analytics item count'\n  );\n}\n\nconst requiredFields = [\n  'linkedin_post',\n  'facebook_post',\n  'blog_html',\n  'email_subject',\n  'email_body',\n  'website_summary'\n];\n\nconst websiteURL = 'https://teamseafarers.com/';\n\nconst appURL =\n  'https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share';\n\nconst appHtmlURL =\n  'https://play.google.com/store/apps/details?id=com.teamseafarers.app&amp;pcampaignid=web_share';\n\nconst contactURL =\n  'https://teamseafarers.com/contact-us';\n\nconst expectedCTA =\n  'Explore maritime courses on TeamSeafarers: ' + websiteURL +\n  '\\nGet the TeamSeafarers Android app: ' + appURL;\n\nconst approvedURLs = [\n  websiteURL,\n  appURL,\n  appHtmlURL,\n  contactURL\n];\n\nconst approvedOpeningAnchors = [\n  '<a href=\"' + websiteURL + '\">',\n  '<a href=\"' + appURL + '\">',\n  '<a href=\"' + appHtmlURL + '\">',\n  '<a href=\"' + contactURL + '\">'\n];\n\nfunction normalizeCTA(value) {\n  return String(value || '')\n    .replace(/&amp;/gi, '&')\n    .replace(/\\r\\n/g, '\\n')\n    .split('\\n')\n    .map(line => line.trim())\n    .filter(Boolean)\n    .join('\\n')\n    .trim();\n}\n\nfunction removeHtml(value) {\n  return String(value || '')\n    .replace(/<br\\s*\\/?>/gi, '\\n')\n    .replace(/<\\/p>\\s*<p[^>]*>/gi, '\\n')\n    .replace(/<[^>]*>/g, '')\n    .replace(/&amp;/gi, '&')\n    .replace(/&nbsp;/gi, ' ')\n    .replace(/[ \\t]+/g, ' ')\n    .replace(/\\n\\s*/g, '\\n')\n    .trim();\n}\n\nfunction normalizeMarkdownLinks(value) {\n  let result = String(value || '');\n\n  [websiteURL, appURL, contactURL].forEach(url => {\n    const markdownLink =\n      '[' + url + '](' + url + ')';\n\n    result = result\n      .split(markdownLink)\n      .join(url);\n  });\n\n  return result;\n}\n\nreturn publisherItems.map((item, index) => {\n  let jsonText =\n    item.json.output[0].content[0].text.trim();\n\n  jsonText = jsonText\n    .replace(/^```json\\s*/i, '')\n    .replace(/^```\\s*/i, '')\n    .replace(/\\s*```$/, '');\n\n  const publish = JSON.parse(jsonText);\n\n  requiredFields.forEach(field => {\n    if (!(field in publish)) {\n      throw new Error(\n        'Missing Publisher field: ' + field\n      );\n    }\n\n    if (typeof publish[field] !== 'string') {\n      throw new Error(\n        field + ' must be a string'\n      );\n    }\n\n    publish[field] =\n      normalizeMarkdownLinks(publish[field]);\n  });\n\n  const extraFields = Object.keys(publish).filter(\n    field => !requiredFields.includes(field)\n  );\n\n  if (extraFields.length > 0) {\n    throw new Error(\n      'Unexpected Publisher fields: ' +\n      extraFields.join(', ')\n    );\n  }\n\n  const approved = analyticsItems[index].json;\n  const approvedCTA = approved.call_to_action;\n\n  if (!approvedCTA) {\n    throw new Error(\n      'Approved call_to_action is missing'\n    );\n  }\n\n  if (\n    normalizeCTA(approvedCTA) !==\n    normalizeCTA(expectedCTA)\n  ) {\n    throw new Error(\n      'Upstream call_to_action does not match the verified Seafarer CTA'\n    );\n  }\n\n  const nonCTAFields = [\n    'email_subject',\n    'website_summary'\n  ];\n\n  nonCTAFields.forEach(field => {\n    if (/https?:\\/\\/|www\\./i.test(publish[field])) {\n      throw new Error(\n        field + ' contains a URL'\n      );\n    }\n  });\n\n  const combinedText = requiredFields\n    .map(field => publish[field])\n    .join('\\n');\n\n  /*\n   * Remove approved URLs temporarily.\n   * Reject the output if another URL remains.\n   */\n  let textWithoutApprovedURLs = combinedText;\n\n  [...approvedURLs]\n    .sort((a, b) => b.length - a.length)\n    .forEach(url => {\n      textWithoutApprovedURLs =\n        textWithoutApprovedURLs\n          .split(url)\n          .join('');\n    });\n\n  if (/https?:\\/\\/|www\\./i.test(textWithoutApprovedURLs)) {\n    throw new Error(\n      'Publisher output contains an unverified URL'\n    );\n  }\n\n  if (/\\[[^\\]]+\\]\\([^)]+\\)/.test(combinedText)) {\n    throw new Error(\n      'Publisher output still contains Markdown-link syntax'\n    );\n  }\n\n  /*\n   * Facebook and LinkedIn must contain the exact\n   * two-line plain-text CTA.\n   */\n  ['linkedin_post', 'facebook_post'].forEach(field => {\n    if (\n      !normalizeCTA(publish[field])\n        .includes(normalizeCTA(expectedCTA))\n    ) {\n      throw new Error(\n        field +\n        ' does not contain the exact Seafarer CTA'\n      );\n    }\n\n    if (/<a\\b/i.test(publish[field])) {\n      throw new Error(\n        field + ' must not contain HTML anchors'\n      );\n    }\n  });\n\n  /*\n   * Blog and email must contain clickable website\n   * and Android application links.\n   */\n  ['blog_html', 'email_body'].forEach(field => {\n    const anchorTags =\n      publish[field].match(/<a\\b[^>]*>/gi) || [];\n\n    anchorTags.forEach(anchor => {\n      if (!approvedOpeningAnchors.includes(anchor)) {\n        throw new Error(\n          field + ' contains an unverified anchor tag: ' +\n          anchor\n        );\n      }\n    });\n\n    const hasWebsiteAnchor =\n      publish[field].includes(\n        '<a href=\"' + websiteURL + '\">'\n      );\n\n    const hasAppAnchor =\n      publish[field].includes(\n        '<a href=\"' + appURL + '\">'\n      ) ||\n      publish[field].includes(\n        '<a href=\"' + appHtmlURL + '\">'\n      );\n\n    if (!hasWebsiteAnchor) {\n      throw new Error(\n        field +\n        ' does not contain the approved website link'\n      );\n    }\n\n    if (!hasAppAnchor) {\n      throw new Error(\n        field +\n        ' does not contain the approved Android app link'\n      );\n    }\n\n    const visibleText =\n      normalizeCTA(removeHtml(publish[field]));\n\n    if (\n      !visibleText.includes(\n        normalizeCTA(expectedCTA)\n      )\n    ) {\n      throw new Error(\n        field +\n        ' does not display the exact Seafarer CTA'\n      );\n    }\n  });\n\n  if (\n    /<script\\b|<iframe\\b|<form\\b|<button\\b/i\n      .test(combinedText)\n  ) {\n    throw new Error(\n      'Publisher output contains an unsafe HTML element'\n    );\n  }\n\n  const prohibitedPatterns = [\n    /\\bfree\\s+(audit|demo|consultation|trial)\\b/i,\n    /\\brequest\\s+(a\\s+)?demo\\b/i,\n    /\\bdownloadable\\b/i,\n    /\\b(?:we|TeamSeafarers|our platform|this service)\\s+(?:will\\s+)?guarantee(?:s|d)?\\b/i,\n    /\\bbook\\s+now\\b/i,\n    /\\benrol\\s+now\\b/i\n  ];\n\n  prohibitedPatterns.forEach(pattern => {\n    if (pattern.test(combinedText)) {\n      throw new Error(\n        'Publisher output contains prohibited wording: ' +\n        pattern\n      );\n    }\n  });\n\n  return {\n    json: {\n      ...approved,\n      ...publish\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        816
+      ],
+      "id": "b0087062-44ab-41bf-ad89-755209535794",
+      "name": "Publisher Parser"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $('01 - Load Content Writer Prompt from GitHub').item.json.data }}\n\n---\n\nCompany Context\n\n{{ $('Company Context').item.json.company_context }}\n\n---\n\nMarketing Strategy\n\n{{ JSON.stringify($('Topic Parser').item.json, null, 2) }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        -880,
+        256
+      ],
+      "id": "2d3a6ee2-07ac-41c9-8f3a-41ddbcd7216f",
+      "name": "Content Writer AI",
+      "credentials": {
+        "openAiApi": {
+          "id": "sg99ygMGJzE1caH0",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "={{ $json.data }}\n\n---\n\nCompany Context:\n\n{{ $('Company Context').item.json.company_context }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        160,
+        0
+      ],
+      "id": "0cef0a58-7580-42b9-bf1a-e4dacb3c97f8",
+      "name": "Marketing Strategist AI",
+      "credentials": {
+        "openAiApi": {
+          "id": "sg99ygMGJzE1caH0",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are the Topic Generator AI for TeamSeafarers.\n\nYour responsibility is ONLY to generate practical Seafarer-focused marketing topics.\n\nYou receive the approved marketing direction from the Marketing Strategist Parser.\n\nStrategy:\n\n{{ JSON.stringify($json) }}\n\nBased only on that strategy, generate exactly 10 practical marketing topics.\n\nEach topic must:\n\n- Address one practical problem faced by Indian seafarers, maritime professionals, maritime students, or maritime course seekers.\n- Build awareness and trust in TeamSeafarers.\n- Support course discovery, supported booking opportunities, booking management, or effective use of the TeamSeafarers website and Android app.\n- Be suitable for Facebook, LinkedIn, Blog, and Website.\n- Remain consistent with the supplied strategy.\n- Use only TeamSeafarers capabilities confirmed in the supplied strategy and Knowledge Base.\n- Do not claim side-by-side course comparison, waitlists, course-duration filtering, batch-timing filtering, direct institute communication, guaranteed seats, or guaranteed availability unless explicitly verified in the supplied input.\n- When mentioning course-discovery filters, use only filters explicitly verified in the supplied strategy or Knowledge Base.\n- Use simple and accessible language.\n- Avoid promises or guaranteed results.\n- Avoid medical, legal, regulatory, certification, or employment advice.\n- Avoid invented TeamSeafarers features, courses, institutes, availability, services, offers, policies, statistics, fees, discounts, prices, or timelines.\n- Never promise admission, certification, employment, placement, salary, promotion, refunds, or course availability.\n- Never offer an audit, consultation, demo, trial, downloadable resource, PDF, template, report, webinar, discount, job, placement, scholarship, or guarantee. Promoting the verified TeamSeafarers Android app through the approved Google Play link is allowed.\n- A checklist may be the content format, but it must not be described as downloadable, free, gated, or an existing TeamSeafarers resource.\n- Never invent a new call to action.\n- Use exactly this two-line call to action for every topic:\n\nExplore maritime courses on TeamSeafarers: https://teamseafarers.com/\nGet the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share\n\nDo not add Markdown link formatting.\nDo not add another CTA, offer, download, demo, trial or guarantee.\nBefore returning the response, verify that every object contains exactly these seven fields:\ntopic, platform, goal, priority, audience, content_type, call_to_action.\n\nVerify that call_to_action exactly matches the approved two-line CTA and that all 10 objects use the identical value.\n\n\nThe call_to_action must not contain Markdown link syntax, HTML, brackets, or additional wording.\n\nReturn ONLY valid JSON.\n\nUse exactly this structure:\n\n[\n  {\n    \"topic\": \"\",\n    \"platform\": \"\",\n    \"goal\": \"\",\n    \"priority\": \"\",\n    \"audience\": \"\",\n    \"content_type\": \"\",\n    \"call_to_action\": \"Explore maritime courses on TeamSeafarers: https://teamseafarers.com/\\nGet the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share\"\n  }\n]\n\nRules:\n\n- Generate exactly 10 objects.\n- Return no explanations.\n- Return no Markdown.\n- Return no headings.\n- Do not wrap the JSON inside code fences."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        768,
+        0
+      ],
+      "id": "6a96e1c8-67a8-4afa-9b57-5e17381a04cb",
+      "name": "Topic Generator AI",
+      "credentials": {
+        "openAiApi": {
+          "id": "sg99ygMGJzE1caH0",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8daa474f-0c99-4bf5-944d-dd27d36fa8fa",
+              "name": "company_context",
+              "value": "{\n  \"company_name\": \"TeamSeafarers\",\n  \"industry\": \"Maritime Training Marketplace\",\n\n  \"primary_audience\": \"Maritime Training Institutes\",\n  \"secondary_audience\": \"Seafarers\",\n\n  \"mission\": \"Help maritime institutes receive more bookings while simplifying admissions, payments, communication and marketing.\",\n\n  \"primary_goal\": \"Generate qualified enquiries from maritime training institutes.\",\n  \"secondary_goal\": \"Build trust among seafarers.\",\n\n  \"brand_personality\": [\n    \"Professional\",\n    \"Trustworthy\",\n    \"Helpful\",\n    \"Modern\",\n    \"Technology-driven\"\n  ],\n\n  \"writing_tone\": [\n    \"Simple\",\n    \"Professional\",\n    \"Educational\",\n    \"Friendly\",\n    \"Practical\"\n  ],\n\n  \"avoid\": [\n    \"Clickbait\",\n    \"False claims\",\n    \"Over-promising\",\n    \"Complex language\"\n  ],\n\n  \"main_platforms\": [\n    \"Website\",\n    \"Blog\",\n    \"LinkedIn\",\n    \"Facebook\"\n  ]\n}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -592,
+        0
+      ],
+      "id": "ae1c936a-d16c-4309-b4c1-95de17b86b8a",
+      "name": "Company Context"
+    },
+    {
+      "parameters": {
+        "url": "={{\n\"https://api.github.com/repos/TRSSolution/AI-Marketing/contents/11_AI_Employees_Seafarer/01-Seafarer-marketing-strategist.md?ref=main\"\n}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "8e77ea56-0f25-4f36-857d-9a6ee1153949",
+      "name": "01 - Load Marketing Prompt from GitHub",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "hfUeo3D0TljNyCS6",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ \"https://api.github.com/repos/TRSSolution/AI-Marketing/contents/11_AI_Employees_Seafarer/03-Seafarer-content-writer.md?ref=main\"}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1296,
+        0
+      ],
+      "id": "d223bbf8-ad16-45bb-a5ba-53108fa0d48a",
+      "name": "01 - Load Content Writer Prompt from GitHub",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "hfUeo3D0TljNyCS6",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ \"https://api.github.com/repos/TRSSolution/AI-Marketing/contents/11_AI_Employees_Seafarer/04-Seafarer-content-reviewer.md?ref=main\" }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -336,
+        256
+      ],
+      "id": "dbb519e8-35ee-43d9-ac1f-58bc7c3bbe25",
+      "name": "Load Content Reviewer Prompt from GitHub",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "hfUeo3D0TljNyCS6",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{\n\"https://api.github.com/repos/TRSSolution/AI-Marketing/contents/11_AI_Employees_Seafarer/05-Seafarer-seo-analyst.md?ref=main\"\n}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        832,
+        272
+      ],
+      "id": "2b907c01-f13c-43ec-bfa7-bd08e1008bfa",
+      "name": "Load SEO Analyst Prompt from GitHub",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "hfUeo3D0TljNyCS6",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{\n\"https://api.github.com/repos/TRSSolution/AI-Marketing/contents/11_AI_Employees_Seafarer/07-Seafarer-analytics-manager.md?ref=main\"\n}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        816,
+        576
+      ],
+      "id": "1e7dcd58-11e5-4bd8-939f-0cc623cf5d8d",
+      "name": "Load Analyst Manager Prompt from GitHub",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "hfUeo3D0TljNyCS6",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{\n\"https://api.github.com/repos/TRSSolution/AI-Marketing/contents/11_AI_Employees_Seafarer/08-Seafarer-publisher.md?ref=main\"\n}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -416,
+        816
+      ],
+      "id": "86f7cfcc-ec4c-4602-b44a-84e93cfea6d2",
+      "name": "Load Publisher Prompt from GitHub",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "hfUeo3D0TljNyCS6",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{\n\"https://api.github.com/repos/TRSSolution/AI-Marketing/contents/11_AI_Employees_Seafarer/06-Seafarer-image-designer.md?ref=main\"\n}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -352,
+        576
+      ],
+      "id": "3d9aa8ad-a048-415a-9ee6-dbc659f58062",
+      "name": "Load Image Designer Prompt from GitHub",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "hfUeo3D0TljNyCS6",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const strategy = $('Marketing Strategist AI').first().json;\n\nconst topics = $('Topic Parser').all();\nconst contents = $('Content Parser').all();\nconst reviews = $('Reviewer Parser').all();\nconst seoResults = $('SEO Parser').all();\nconst images = $('Image Parser').all();\nconst analyticsResults = $('Analytics Parser').all();\nconst publishers = $('Publisher Parser').all();\n\nconst expected = topics.length;\n\nconst counts = [\n  contents.length,\n  reviews.length,\n  seoResults.length,\n  images.length,\n  analyticsResults.length,\n  publishers.length\n];\n\nif (counts.some(count => count !== expected)) {\n  throw new Error(`Item-count mismatch. Expected ${expected}; received ${counts.join(', ')}`);\n}\n\nreturn topics.map((topic, index) => ({\n  json: {\n    marketing_strategy: strategy,\n    topic: topic.json,\n    content: contents[index].json,\n    review: reviews[index].json,\n    seo: seoResults[index].json,\n    image: images[index].json,\n    analytics: analyticsResults[index].json,\n    publisher: publishers[index].json\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        864
+      ],
+      "id": "5e4324ba-5134-4db1-b260-8d00df64a570",
+      "name": "Final Output"
+    },
+    {
+      "parameters": {
+        "jsCode": "const files = [\n  'company.md',\n  'products.md',\n  'institute.md',\n  'seafarer.md',\n  'payments.md',\n  'policies.md'\n];\n\nconst baseUrl =\n  'https://api.github.com/repos/TRSSolution/AI-Marketing/contents/10_Knowledge_Base/';\n\nreturn files.map(file => ({\n  json: {\n    kb_file: file,\n    kb_url: baseUrl + file + '?ref=main'\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        -192
+      ],
+      "id": "b8b781ac-1c73-4404-ab49-4865dfdae998",
+      "name": "Prepare Knowledge Base URLs"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.kb_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.raw+json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text",
+              "outputPropertyName": "kb_content"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -224,
+        -192
+      ],
+      "id": "eae3f4ac-f8e0-4b27-99a9-0bee8075d27e",
+      "name": "Load Knowledge Base Files",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "hfUeo3D0TljNyCS6",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nif (items.length !== 6) {\n  throw new Error(\n    'Expected 6 Knowledge Base files, but received ' + items.length\n  );\n}\n\nconst files = [\n  'company.md',\n  'products.md',\n  'institute.md',\n  'seafarer.md',\n  'payments.md',\n  'policies.md'\n];\n\nconst sections = items.map((item, index) =>\n  '===== ' + files[index] + ' =====\\n' + item.json.kb_content\n);\n\nreturn [\n  {\n    json: {\n      kb_context: sections.join('\\n\\n')\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        32,
+        -192
+      ],
+      "id": "8059eff4-83e6-4432-adac-7cd8636362d7",
+      "name": "Combine Knowledge Base"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -64,
+        272
+      ],
+      "id": "16a52626-f283-4910-b082-042c34fba556",
+      "name": "Merge Reviewer Content and Knowledge Base"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        128,
+        464
+      ],
+      "id": "0ffe14bb-d3ff-4587-b32c-da93ff3c4832",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.buffer.com",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  query: `mutation CreateDraftPost($input: CreatePostInput!) {\n    createPost(input: $input) {\n      ... on PostActionSuccess {\n        post {\n          id\n          text\n        }\n      }\n      ... on MutationError {\n        message\n      }\n    }\n  }`,\n  variables: {\n    input: {\ntext:\n  $json.publisher.facebook_post +\n  '\\n\\n' +\n  ($json.analytics.hashtags || [])\n    .slice(0, 5)\n    .map(tag =>\n      tag.startsWith('#')\n        ? tag\n        : '#' + tag.replace(/\\s+/g, '')\n    )\n    .join(' '),\n      channelId: \"6a888186ccaf649a67ed1770\",\n      schedulingType: \"automatic\",\n      mode: \"addToQueue\",\n      saveToDraft: true,\n      metadata: {\n        facebook: {\n          type: \"post\"\n        }\n      },\n      assets: [\n        {\n          image: {\n            url: $json.branded_image_url\n          }\n        }\n      ]\n    }\n  }\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1216,
+        1088
+      ],
+      "id": "1dbb0658-3bcc-4fd1-8fb7-0bf4fc35c417",
+      "name": "Create Buffer Draft",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "mo1MSWLB0ZIyjd9c",
+          "name": "Header Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-image-1-mini"
+        },
+        "prompt": "={{\n  $json.image_prompt\n  + \"\\n\\nImage style: \" + $json.image_style\n  + \"\\nTarget aspect ratio: \" + $json.aspect_ratio\n  + \"\\nAvoid: \" + $json.negative_prompt\n  + \"\\n\\nFINAL COMPOSITION OVERRIDE — HIGHEST PRIORITY: Override any earlier people-count or placement instruction. Show only two realistic Indian seafarers or Indian maritime course seekers. They must be grouped entirely within the left 60% of the image. Keep the entire rightmost 35%, from top to bottom, as a plain, uncluttered light-coloured wall or softly blurred neutral background. Do not place any person, face, body part, doorway, furniture, helmet, phone, document, equipment, text, logo, or important object anywhere in the rightmost 35%. This empty area is mandatory for the later Cloudinary logo overlay.\"\n}}",
+        "options": {
+          "size": "1536x1024"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        832,
+        800
+      ],
+      "id": "c3c6e599-4787-4342-9cb5-f960828b117f",
+      "name": "Generate an image",
+      "credentials": {
+        "openAiApi": {
+          "id": "sg99ygMGJzE1caH0",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        864,
+        1088
+      ],
+      "id": "87de12ae-2063-4c53-948a-2c7a0c852807",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "uploadFile",
+        "additionalFieldsFile": {}
+      },
+      "type": "n8n-nodes-cloudinary.cloudinary",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        800
+      ],
+      "id": "c14c5873-75c6-4823-9e68-ca188fe76f82",
+      "name": "Cloudinary Upload",
+      "credentials": {
+        "cloudinaryApi": {
+          "id": "VOAmAn5MgYtWL64r",
+          "name": "Cloudinary account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const sourceUrl = item.json.secure_url;\n\n  if (!sourceUrl || !sourceUrl.includes('/image/upload/')) {\n    throw new Error('Cloudinary secure_url is missing or invalid');\n  }\n\n  const transformation =\n    'w_1200,c_limit,q_auto,f_auto/' +\n    'l_teamseafarers_mark,w_110,c_fit,g_north_east,x_25,y_25';\n\n  const brandedImageUrl = sourceUrl.replace(\n    '/image/upload/',\n    `/image/upload/${transformation}/`\n  );\n\n  return {\n    json: {\n      ...item.json,\n      branded_image_url: brandedImageUrl\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1296,
+        800
+      ],
+      "id": "ed040e89-634c-41d7-baf3-f548af76ae98",
+      "name": "Build Branded Image URL"
+    },
+    {
+      "parameters": {
+        "jsCode": "const expectedCTA =\n  'Contact TeamSeafarers to learn more: https://teamseafarers.com/contact-us';\n\nreturn $input.all().map(item => {\n  let jsonText = item.json.output[0].content[0].text.trim();\n\n  jsonText = jsonText\n    .replace(/^```json\\s*/i, '')\n    .replace(/^```\\s*/i, '')\n    .replace(/\\s*```$/, '');\n\n  const strategy = JSON.parse(jsonText);\n\n  const requiredFields = [\n    'customer_problem',\n    'weekly_theme',\n    'content_title',\n    'content_goal',\n    'target_audience',\n    'primary_cta',\n    'secondary_cta',\n    'content_writer_brief'\n  ];\n\n  requiredFields.forEach(field => {\n    if (typeof strategy[field] !== 'string') {\n      throw new Error(\n        'Missing or invalid Marketing Strategist field: ' + field\n      );\n    }\n  });\n\n  // Replace any AI-formatted CTA with the approved plain-text CTA.\nconst expectedPrimaryCTA =\n  'Explore maritime courses on TeamSeafarers: https://teamseafarers.com/';\n\nconst expectedSecondaryCTA =\n  'Get the TeamSeafarers Android app: https://play.google.com/store/apps/details?id=com.teamseafarers.app&pcampaignid=web_share';\n\nstrategy.primary_cta = expectedPrimaryCTA;\nstrategy.secondary_cta = expectedSecondaryCTA;\n\n  // Remove Markdown formatting of the approved URL from the writer brief.\n  strategy.content_writer_brief =\n    strategy.content_writer_brief.replace(\n      /\\[https:\\/\\/teamseafarers\\.com\\/contact-us(?:\\\\)?\\]\\(https:\\/\\/teamseafarers\\.com\\/contact-us(?:\\\\)?\\)/gi,\n      'https://teamseafarers.com/contact-us'\n    );\n\n  return {\n    json: strategy\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        528,
+        0
+      ],
+      "id": "1fc3c710-9998-4624-ac46-c6e0fa053211",
+      "name": "Marketing Strategist Parser"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Company Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Parser": {
+      "main": [
+        [
+          {
+            "node": "Load Content Reviewer Prompt from GitHub",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Topic Parser": {
+      "main": [
+        [
+          {
+            "node": "01 - Load Content Writer Prompt from GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Reviewer AI": {
+      "main": [
+        [
+          {
+            "node": "Reviewer Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reviewer Parser": {
+      "main": [
+        [
+          {
+            "node": "Load SEO Analyst Prompt from GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SEO Analyst AI": {
+      "main": [
+        [
+          {
+            "node": "SEO Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SEO Parser": {
+      "main": [
+        [
+          {
+            "node": "Load Image Designer Prompt from GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Designer AI": {
+      "main": [
+        [
+          {
+            "node": "Image Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Parser": {
+      "main": [
+        [
+          {
+            "node": "Load Analyst Manager Prompt from GitHub",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analytics Manager AI": {
+      "main": [
+        [
+          {
+            "node": "Analytics Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analytics Parser": {
+      "main": [
+        [
+          {
+            "node": "Load Publisher Prompt from GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publisher AI": {
+      "main": [
+        [
+          {
+            "node": "Publisher Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Writer AI": {
+      "main": [
+        [
+          {
+            "node": "Content Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marketing Strategist AI": {
+      "main": [
+        [
+          {
+            "node": "Marketing Strategist Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Topic Generator AI": {
+      "main": [
+        [
+          {
+            "node": "Topic Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company Context": {
+      "main": [
+        [
+          {
+            "node": "Prepare Knowledge Base URLs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "01 - Load Marketing Prompt from GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "01 - Load Marketing Prompt from GitHub": {
+      "main": [
+        [
+          {
+            "node": "Marketing Strategist AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "01 - Load Content Writer Prompt from GitHub": {
+      "main": [
+        [
+          {
+            "node": "Content Writer AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Content Reviewer Prompt from GitHub": {
+      "main": [
+        [
+          {
+            "node": "Merge Reviewer Content and Knowledge Base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load SEO Analyst Prompt from GitHub": {
+      "main": [
+        [
+          {
+            "node": "SEO Analyst AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Analyst Manager Prompt from GitHub": {
+      "main": [
+        [
+          {
+            "node": "Analytics Manager AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Publisher Prompt from GitHub": {
+      "main": [
+        [
+          {
+            "node": "Publisher AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Image Designer Prompt from GitHub": {
+      "main": [
+        [
+          {
+            "node": "Image Designer AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publisher Parser": {
+      "main": [
+        [
+          {
+            "node": "Final Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Knowledge Base URLs": {
+      "main": [
+        [
+          {
+            "node": "Load Knowledge Base Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Knowledge Base Files": {
+      "main": [
+        [
+          {
+            "node": "Combine Knowledge Base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Knowledge Base": {
+      "main": [
+        [
+          {
+            "node": "Merge Reviewer Content and Knowledge Base",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Reviewer Content and Knowledge Base": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Content Reviewer AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Output": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Create Buffer Draft": {
+      "main": [
+        []
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        [
+          {
+            "node": "Cloudinary Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cloudinary Upload": {
+      "main": [
+        [
+          {
+            "node": "Build Branded Image URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Create Buffer Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Branded Image URL": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marketing Strategist Parser": {
+      "main": [
+        [
+          {
+            "node": "Topic Generator AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "261fbbbf-e175-48d2-a7e5-d5b55a866e23",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7010bcdf315fa942c077a6144234b119e7bbd2c1370f8d3418839066fa8efe2b"
+  },
+  "nodeGroups": [],
+  "id": "x3QXlHjTBk0NSbSK",
+  "tags": []
+}
