@@ -37,7 +37,9 @@ This workflow is for marketing TeamSeafarers to Indian seafarers, maritime profe
 Mandatory rules:
 
 * When people are required, show realistic Indian adults who clearly represent seafarers, maritime professionals, maritime students, or people preparing for maritime training.
-* Use a natural mix of Indian men and women appropriate to the approved article.
+* Reflect realistic Indian maritime-sector demographics. Most generated images should primarily show adult Indian men. Women seafarers or maritime students may appear occasionally when appropriate, but do not include a woman in every image. Across the weekly visual rotation, approximately four out of every five images should contain only men or have men as the clear majority.
+* All people must be adults. Do not depict children or young-looking teenagers.
+* Do not automatically add a woman merely to create gender balance.
 * Prefer one or two primary characters only.
 * Do not show more than two people unless the approved article genuinely requires a group scene.
 * When space is limited, reduce the number of people rather than occupying the reserved branding area.
@@ -53,6 +55,26 @@ Mandatory rules:
 * Avoid artificial-looking faces, distorted hands, exaggerated poses, stereotypes, or staged stock-photo expressions.
 * Do not use cartoon, animated, illustrated, anime, painted, or Ghibli-style characters in this workflow.
 * The `image_prompt` must explicitly include the words `Indian seafarers`.
+* Prefer ship-deck, port waiting, shared accommodation, home preparation, maritime classroom, training-yard and travel-preparation environments.
+* Avoid conference rooms, admissions offices, reception areas and generic corporate offices unless the approved article specifically requires such a setting.
+
+
+## Realism and Visual Variety Rules
+
+* Use a candid documentary-photography style rather than a staged corporate stock-photo style.
+* Show people performing a clear, natural activity relevant to the approved article and selected campaign variation.
+* Vary body positions naturally: standing, walking, preparing equipment, packing, reviewing blank documents, waiting near a port, or planning independently.
+* Do not automatically show people seated around a table or gathered around a laptop.
+* Use realistic maritime environments with ordinary signs of use, such as practical furniture, travel bags, plain safety equipment, modest accommodation, training areas, port surroundings, or ship-deck details.
+* Environments must look functional and naturally used, not luxurious, perfectly arranged, showroom-clean, or like a generic corporate office.
+* Use varied adult ages, natural posture, subtle facial expressions, and believable interactions.
+* Clothing must match the selected scenario and activity. Vary between plain casual clothing, smart-casual travel clothing, non-branded maritime workwear, and non-branded training attire.
+* Do not place safety helmets or protective equipment in office, home, accommodation, or travel scenes unless the activity genuinely requires them.
+* Preserve the supplied controlled variation for scenario, activity, attire, camera shot, and number of people.
+* Do not replace the controlled variation with a generic office discussion.
+* Avoid repeating the same room, table, laptop arrangement, character positions, clothing colours, or camera angle used in typical previous images.
+* Prefer natural imperfections and believable working environments while keeping the image professional and suitable for marketing.
+
 
 ## Mandatory Composition Rules
 
@@ -78,6 +100,10 @@ Mandatory rules:
 * The `image_prompt` must explicitly state that the image contains no visible text, letters, numbers, logos, brand names, websites, application interfaces, or watermarks.
 * The `image_prompt` must explicitly state that the entire rightmost 35% and upper-right area remain plain and clear for a later branding overlay.
 * The Cloudinary logo will be added after image generation and must not be requested inside the generated base image.
+* Use a subtle TeamSeafarers-aligned visual palette across the scene: navy blue, teal, white, grey and warm neutral colours.
+* Apply these colours naturally through clothing, equipment or background accents; do not make every person wear the same colour.
+* Keep the visual style professional, practical and trustworthy rather than highly promotional.
+* Use only the later Cloudinary logo overlay as visible branding. Do not generate additional logos, headlines, slogans, website text, app-store badges, QR codes or calls to action inside the image.
 
 ## Negative Prompt Requirements
 
@@ -121,7 +147,24 @@ The `negative_prompt` must include:
 * exaggerated expressions
 * crowded composition
 * staged stock-photo appearance
-
+* generic corporate meeting
+* repeated people gathered around a laptop
+* identical office background
+* symmetrical posing
+* everyone looking at one screen
+* excessive smiling
+* fashion-model appearance
+* showroom-clean environment
+* inappropriate indoor safety helmet
+* staged discussion around a table
+* multiple logos
+* promotional headline
+* slogan
+* call-to-action text
+* QR code
+* app-store badge
+* oversized branding
+* matching uniforms in identical colours
 
 ## Final Validation
 
