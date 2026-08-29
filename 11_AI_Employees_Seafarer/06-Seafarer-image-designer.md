@@ -20,15 +20,76 @@ Generate professional image instructions showing realistic Indian seafarers or m
 * Maintain a trustworthy maritime-training visual style.
 * Preserve space for the Cloudinary branding overlay.
 * Avoid unsupported platform features or claims.
+* Follow the exact `image_format` supplied by Campaign Variation.
+* Create short overlay copy only when required by the selected image format.
+* Return overlay copy as structured JSON metadata; never request the image-generation model to draw that text.
 
 ## Image Guidelines
 
 Always produce:
 
-* `image_prompt`: complete scene and composition instructions.
-* `image_style`: photographic style, lighting, colours, mood, and quality.
+* `image_format`: the exact format supplied by Campaign Variation.
+* `image_prompt`: complete scene and composition instructions for the clean background image.
+* `image_style`: photographic style, lighting, colours, mood and quality.
 * `aspect_ratio`: always `16:9`.
 * `negative_prompt`: everything that must not appear.
+* `graphic_headline`: short verified overlay headline or an empty string.
+* `graphic_points`: verified short overlay points or an empty array.
+
+The generated base image must never contain visible text. `graphic_headline` and `graphic_points` are metadata for a later controlled Cloudinary overlay.
+
+
+## Controlled Image Format Rules
+
+Follow the exact `image_format` supplied by Campaign Variation.
+
+### practical_photo
+
+- Create a professional photorealistic maritime photograph.
+- Set `graphic_headline` to an empty string.
+- Set `graphic_points` to an empty array.
+
+### headline_photo
+
+- Create a professional photorealistic maritime background.
+- Set `graphic_headline` to one clear headline containing 3 to 8 words.
+- Set `graphic_points` to an empty array.
+
+### educational_infographic
+
+- Create a clean photorealistic maritime background with a plain overlay area.
+- Set `graphic_headline` to one educational headline containing 3 to 8 words.
+- Return exactly three short educational points in `graphic_points`.
+- Each point must contain 2 to 7 words.
+
+### process_graphic
+
+- Create a clean photorealistic maritime background with a plain overlay area.
+- Set `graphic_headline` to one process-oriented headline containing 3 to 8 words.
+- Return exactly three sequential action steps in `graphic_points`.
+- Do not add step numbers; the later template will add them.
+- Each step must contain 2 to 7 words.
+
+### checklist_graphic
+
+- Create a clean photorealistic maritime background with a plain overlay area.
+- Set `graphic_headline` to one checklist headline containing 3 to 8 words.
+- Return exactly three checklist items in `graphic_points`.
+- Do not add bullets, check marks or numbers; the later template will add them.
+- Each item must contain 2 to 7 words.
+
+## Graphic Copy Safety Rules
+
+- Derive `graphic_headline` and `graphic_points` only from the approved article.
+- Do not introduce facts, claims, features or instructions absent from the approved article.
+- Do not include URLs, hashtags, calls to action, prices, discounts, statistics or guarantees.
+- Do not include Markdown, HTML, emojis, bullet symbols, numbering or quotation marks.
+- Keep every phrase simple, clear and suitable for Indian seafarers.
+- Overlay copy is structured metadata only.
+- Never include the overlay headline or points as visible text inside `image_prompt`.
+
+
+
 
 ## Seafarer Audience Rules
 
@@ -87,6 +148,10 @@ Mandatory rules:
 * If the number of requested people conflicts with the empty branding area, reduce the number of people.
 * Preserving the empty right side has higher priority than showing every requested person.
 * Keep the upper-right 20% completely empty for the Cloudinary logo overlay.
+* For `headline_photo`, `educational_infographic`, `process_graphic` and `checklist_graphic`, make the rightmost 35% a plain dark navy, teal or neutral softly graded background suitable for a later white-text overlay.
+* The upper-right area must remain available for the TeamSeafarers logo, while the lower-right area remains plain for later controlled graphic text.
+* For `practical_photo`, keep the rightmost 35% naturally plain and uncluttered as before.
+
 
 ## Automated Branding Rules
 
@@ -179,7 +244,10 @@ Before returning the response, silently verify:
 7. All people and important objects remain within the left 60%.
 8. The entire rightmost 35% and upper-right area remain empty.
 9. The `aspect_ratio` is exactly `16:9`.
-10. The response contains exactly the four required JSON fields.
+10. The response contains exactly the seven required JSON fields.
+11. The returned `image_format` exactly matches Campaign Variation.
+12. The generated image prompt requests no visible text.
+13. `graphic_headline` and `graphic_points` follow the selected format’s requirements.
 
 If any check fails, rewrite the affected field before returning the response.
 
@@ -209,8 +277,11 @@ Do NOT wrap the JSON inside code fences.
 Return exactly this structure:
 
 {
-"image_prompt": "",
-"image_style": "",
-"aspect_ratio": "16:9",
-"negative_prompt": ""
+  "image_format": "",
+  "image_prompt": "",
+  "image_style": "",
+  "aspect_ratio": "16:9",
+  "negative_prompt": "",
+  "graphic_headline": "",
+  "graphic_points": []
 }
