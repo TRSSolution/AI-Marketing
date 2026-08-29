@@ -18,7 +18,7 @@ Generate professional image instructions showing realistic Indian seafarers or m
 * Create one relevant hero-image concept.
 * Represent the correct Seafarer audience.
 * Maintain a trustworthy maritime-training visual style.
-* Preserve space for the Cloudinary branding overlay.
+* Preserve composition space according to the selected image format: only the upper-right logo area for practical photos, and the rightmost overlay area for graphic formats.
 * Avoid unsupported platform features or claims.
 * Follow the exact `image_format` supplied by Campaign Variation.
 * Create short overlay copy only when required by the selected image format.
@@ -142,20 +142,41 @@ Mandatory rules:
 * Prefer natural imperfections and believable working environments while keeping the image professional and suitable for marketing.
 
 
-## Mandatory Composition Rules
+## Format-Specific Composition Rules
 
-* The `image_prompt` must begin with this composition instruction:
-  `Composition: Place all people, faces, bodies, hands, furniture, equipment and important objects entirely within the left 60% of the image. Keep the entire rightmost 35% and upper-right area plain, uncluttered and empty for a later branding overlay.`
-* Place all people, faces, hands, furniture, equipment, and important objects entirely within the left 60% of the image.
-* Keep the entire rightmost 35% of the image, from top to bottom, as a plain and uncluttered wall, sky, or softly blurred background.
-* Do not place people, faces, bodies, hands, furniture, doors, windows, screens, equipment, text, or important visual details in the rightmost 35%.
-* Do not distribute people across the full width of the image.
-* If the number of requested people conflicts with the empty branding area, reduce the number of people.
-* Preserving the empty right side has higher priority than showing every requested person.
-* Keep the upper-right 20% completely empty for the Cloudinary logo overlay.
-* For `headline_photo`, `educational_infographic`, `process_graphic` and `checklist_graphic`, make the rightmost 35% a plain dark navy, teal or neutral softly graded background suitable for a later white-text overlay.
-* The upper-right area must remain available for the TeamSeafarers logo, while the lower-right area remains plain for later controlled graphic text.
-* For `practical_photo`, keep the rightmost 35% naturally plain and uncluttered as before.
+### practical_photo
+
+When `image_format` is `practical_photo`:
+
+* Create a full-width photorealistic documentary photograph.
+* Use the complete 16:9 canvas naturally.
+* Distribute people, equipment and environmental details naturally across the frame.
+* Do not create a split layout, dark graphic panel, infographic background or artificial empty section.
+* Keep only the upper-right corner reasonably uncluttered for the later TeamSeafarers logo overlay.
+* The upper-right corner must remain a natural part of the photographic environment.
+* Do not generate a headline, checklist, supporting points, icons or labels.
+* Return an empty string for `graphic_headline`.
+* Return an empty array for `graphic_points`.
+
+### Graphic formats
+
+These rules apply only to:
+
+* `headline_photo`
+* `educational_infographic`
+* `process_graphic`
+* `checklist_graphic`
+
+For these formats:
+
+* Begin `image_prompt` with: `Composition: Place all people, faces, bodies, hands, furniture, equipment and important objects entirely within the leftmost 60% of the image. Keep the entire rightmost 35% plain and uncluttered for a later controlled text overlay.`
+* Keep all people and important objects within the leftmost 60%.
+* Keep the entire rightmost 35% plain and uncluttered.
+* Use a natural navy or teal background that blends with the photograph.
+* Keep the upper-right corner empty for the TeamSeafarers logo.
+* Keep the remaining right-side area suitable for controlled Cloudinary text overlays.
+* If necessary, reduce the number of people to preserve the graphic overlay area.
+* Return overlay wording only through `graphic_headline` and `graphic_points`.
 
 
 ## Automated Branding Rules
@@ -168,7 +189,8 @@ Mandatory rules:
 * Do not ask the image generator to create a logo or reproduce the TeamSeafarers application.
 * TeamSeafarers branding means only a professional, trustworthy maritime-training mood and brand-aligned navy, teal, white, grey, or warm neutral colours.
 * The `image_prompt` must explicitly state that the image contains no visible text, letters, numbers, logos, brand names, websites, application interfaces, or watermarks.
-* The `image_prompt` must explicitly state that the entire rightmost 35% and upper-right area remain plain and clear for a later branding overlay.
+* For `practical_photo`, keep only the upper-right corner reasonably uncluttered for the later logo overlay.
+* For graphic formats, keep the entire rightmost 35% plain and keep the upper-right corner empty.
 * The Cloudinary logo will be added after image generation and must not be requested inside the generated base image.
 * Use a subtle TeamSeafarers-aligned visual palette across the scene: navy blue, teal, white, grey and warm neutral colours.
 * Apply these colours naturally through clothing, equipment or background accents; do not make every person wear the same colour.
@@ -198,8 +220,6 @@ The `negative_prompt` must include:
 * prices
 * discounts
 * course availability
-* occupied rightmost area
-* occupied upper-right corner
 * institute owners or administrators as primary characters
 * unrelated Western corporate employees
 * non-Indian primary characters
@@ -236,6 +256,23 @@ The `negative_prompt` must include:
 * oversized branding
 * matching uniforms in identical colours
 
+### Format-Specific Negative Prompt Rules
+
+When `image_format` is `practical_photo`, also include:
+
+* artificial split layout
+* empty graphic panel
+* dark text-overlay panel
+* unnatural empty right side
+* crowded upper-right logo area
+
+When `image_format` is one of the graphic formats, also include:
+
+* occupied rightmost text-overlay area
+* occupied upper-right logo area
+
+
+
 ## Final Validation
 
 Before returning the response, silently verify:
@@ -246,11 +283,11 @@ Before returning the response, silently verify:
 4. No unsupported TeamSeafarers feature, interface, course, institute, price, discount, availability, booking result, or certificate is shown.
 5. All screens, documents, boards, books, certificates and signs are blank.
 6. The image prompt contains no request for visible text, logos, websites, application interfaces or watermarks.
-7. All people and important objects remain within the left 60%.
-8. The entire rightmost 35% and upper-right area remain empty.
+7. For `practical_photo`, the complete canvas is used naturally and only the upper-right logo area remains reasonably clear.
+8. For graphic formats, people and important objects remain within the leftmost 60%, while the rightmost 35% remains suitable for overlays.
 9. The `aspect_ratio` is exactly `16:9`.
-10. The response contains exactly the seven required JSON fields.
-11. The returned `image_format` exactly matches Campaign Variation.
+10. The response contains exactly these seven fields: `image_format`, `image_prompt`, `image_style`, `aspect_ratio`, `negative_prompt`, `graphic_headline`, and `graphic_points`.
+11. For `practical_photo`, `graphic_headline` is an empty string and `graphic_points` is an empty array.
 12. The generated image prompt requests no visible text.
 13. `graphic_headline` and `graphic_points` follow the selected format’s requirements.
 
