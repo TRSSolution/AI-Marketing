@@ -93,7 +93,19 @@ Follow the exact `image_format` supplied by Campaign Variation.
 - Avoid unnecessarily repeating technical interface words such as `filter`.
 - Use natural phrases such as `Before You Book`, `Choose city or state`, `Review the start date` and `Check the institute name` when supported by the approved article.
 
+### Process Graphic Copy Rules
 
+When `image_format` is `process_graphic`:
+
+* The three graphic points must form one clear and logical sequence.
+* Each point must describe exactly one action.
+* Do not combine separate actions in one point.
+* Every action must relate directly to the selected topic category and the main purpose of the approved article.
+* An incidental mention in the article is not sufficient for creating a process step.
+* Do not introduce preparation of documents, payment, admission, certification or application steps unless that exact activity is the primary subject of the selected topic and approved article.
+* Never use generic combined wording such as `Prepare documents and payment`.
+* For TeamSeafarers platform-guidance content, use only verified navigation, course-discovery, course-detail or supported-booking actions explicitly explained in the approved article.
+* Silently verify that a reader could follow points 1, 2 and 3 in the returned order.
 
 
 ## Seafarer Audience Rules
@@ -290,6 +302,7 @@ Before returning the response, silently verify:
 11. For `practical_photo`, `graphic_headline` is an empty string and `graphic_points` is an empty array.
 12. The generated image prompt requests no visible text.
 13. `graphic_headline` and `graphic_points` follow the selected format’s requirements.
+14. For `process_graphic`, all three points form a logical sequence, each point contains only one action, and no incidental or unsupported document or payment step has been introduced.
 
 If any check fails, rewrite the affected field before returning the response.
 
