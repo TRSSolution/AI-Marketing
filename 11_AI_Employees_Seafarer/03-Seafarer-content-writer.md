@@ -184,7 +184,10 @@ Do not add another CTA or words such as `free`, `demo`, `download`, `install`, `
 - Screens, phones, laptops, documents, books, certificates, boards and signs must be blank and contain no readable text, letters, numbers or logos.
 - Do not request a generated TeamSeafarers logo. Cloudinary will add the approved logo later.
 - Keep the upper-right 20% completely clear and uncluttered for the Cloudinary TeamSeafarers logo overlay.
-- Place important people, faces, hands, objects and equipment primarily in the left and centre portions.
+- Place every important person, face, hand, body part, object, furniture item and piece of equipment completely within the leftmost 60% of the image.
+- Do not describe important subjects as occupying the `left and centre` portions of the image.
+- Keep the entire rightmost 35%, from top to bottom, completely empty, plain and uncluttered.
+- Do not place any person, face, hand, body part, doorway, furniture, equipment, readable screen or important object inside the rightmost 35%.
 - Prefer professional photorealistic imagery with natural Indian skin tones and realistic faces and hands.
 - Do not request cartoon, animation, illustration or Ghibli-style imagery in this workflow.
 - Communicate the subject through people, actions, setting, equipment and composition rather than visible words.
