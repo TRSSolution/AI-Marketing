@@ -73,7 +73,7 @@ Follow the exact `image_format` supplied by Campaign Variation.
 ### checklist_graphic
 
 - Create a clean photorealistic maritime background with a plain overlay area.
-- Set `graphic_headline` to one checklist headline containing 3 to 8 words.
+- Set `graphic_headline` to one natural, engaging checklist headline containing 3 to 6 words.
 - Return exactly three checklist items in `graphic_points`.
 - Do not add bullets, check marks or numbers; the later template will add them.
 - Each item must contain 2 to 7 words.
@@ -87,6 +87,11 @@ Follow the exact `image_format` supplied by Campaign Variation.
 - Keep every phrase simple, clear and suitable for Indian seafarers.
 - Overlay copy is structured metadata only.
 - Never include the overlay headline or points as visible text inside `image_prompt`.
+- Write overlay copy in natural, polished and grammatically correct English.
+- Prefer a clear, engaging headline over generic wording such as `practical checklist`.
+- For checklist graphics, each point should begin with a clear action verb.
+- Avoid unnecessarily repeating technical interface words such as `filter`.
+- Use natural phrases such as `Before You Book`, `Choose city or state`, `Review the start date` and `Check the institute name` when supported by the approved article.
 
 
 
