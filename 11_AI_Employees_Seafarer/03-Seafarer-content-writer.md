@@ -105,8 +105,14 @@ Follow the `content_pillar` supplied by Topic Parser:
 
 - Explain only TeamSeafarers website and Android-application capabilities verified by the supplied Knowledge Base.
 - Do not invent how filters, sorting or other controls operate.
-- When mentioning filters, use only city, state, institute, start date, fee, sorting and discount availability.
+- When mentioning filters, use only city, state, institute, start date, fee and discount availability.
+- When mentioning sorting, state only that the confirmed sorting options are fee and start date.
 - Do not mention fee ranges, distance radius, nearby-city recommendations, personalised results, automatic recommendations, default sorting or multiple-selection behaviour unless explicitly verified.
+- When describing sorting, mention only sorting by fee or start date.
+- Do not claim that any other sorting option exists.
+- Do not mention sorting by relevance, popularity, rating, distance, location, discount, institute, recommendation or other unspecified priorities.
+- Do not use phrases such as `other ordering choices`, `other sorting options`, `best match`, `recommended order` or `sorting based on your priorities`.
+- Safe wording is limited to explaining that users may use the confirmed sorting controls for fee or start date.
 
 For general educational pillars, provide approximately 90% educational value and no more than 10% natural TeamSeafarers positioning.
 
